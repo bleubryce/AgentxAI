@@ -22,7 +22,7 @@ const Footer = () => {
                 </svg>
               </div>
               <span className="text-xl font-clash font-semibold">
-                BOLT<span className="text-bolt-blue">AI</span>
+                AGENT<span className="text-bolt-blue">X AI</span>
               </span>
             </Link>
             <p className="text-gray-400">
@@ -51,7 +51,7 @@ const Footer = () => {
                 <Link to="/features" className="text-gray-400 hover:text-white transition-colors duration-200">Features</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Pricing</a>
+                <Link to="/pricing" className="text-gray-400 hover:text-white transition-colors duration-200">Pricing</Link>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Case Studies</a>
@@ -69,7 +69,7 @@ const Footer = () => {
             <h4 className="text-lg font-medium mb-4">Company</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">About</a>
+                <Link to="/about" className="text-gray-400 hover:text-white transition-colors duration-200">About</Link>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Careers</a>
@@ -81,7 +81,7 @@ const Footer = () => {
                 <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Partners</a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Blog</a>
+                <Link to="/blog" className="text-gray-400 hover:text-white transition-colors duration-200">Blog</Link>
               </li>
             </ul>
           </div>
@@ -107,7 +107,7 @@ const Footer = () => {
         
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} BoltAI. All rights reserved.
+            © {new Date().getFullYear()} AgentX AI. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors duration-200">Terms of Service</a>

@@ -93,13 +93,13 @@ const Navbar = () => {
             Contact
           </Link>
           <div className="w-px h-6 bg-white/10"></div>
-          <a
-            href="#demo"
+          <Link
+            to="/contact"
             className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
           >
             <Zap className="w-4 h-4 mr-2" />
-            Get Started
-          </a>
+            Contact Us
+          </Link>
         </nav>
 
         <button
@@ -178,13 +178,13 @@ const Navbar = () => {
             Contact
           </Link>
           <div className="w-32 h-px bg-white/10 my-4"></div>
-          <a
-            href="#demo"
+          <Link
+            to="/contact"
             className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
           >
             <Zap className="w-4 h-4 mr-2" />
-            Get Started
-          </a>
+            Contact Us
+          </Link>
         </nav>
       </div>
     </header>

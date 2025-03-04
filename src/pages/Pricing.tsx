@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { CheckCircle2, X, ArrowRight, Zap, Building2, MessageSquare, Calendar, FileText, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -64,9 +63,10 @@ const PricingPage = () => {
     },
     {
       name: 'Enterprise',
-      description: 'For brokerages and large teams',
-      monthlyPrice: 249,
-      annualPrice: 2390,
+      description: 'Tailored solutions for brokerages and large teams',
+      monthlyPrice: null,
+      annualPrice: null,
+      priceDisplay: 'Custom Pricing',
       features: [
         'AI Chatbot Assistant (Unlimited)',
         'Property Matching (Unlimited)',
@@ -79,9 +79,11 @@ const PricingPage = () => {
         'Priority Support (Email, Chat, Phone)',
         'Unlimited Agent Users',
         'Dedicated Success Manager',
+        'Custom Training & Onboarding',
+        'SLA & Compliance Options',
       ],
       notIncluded: [],
-      cta: 'Contact Sales',
+      cta: 'Contact Us',
       highlight: false,
       color: 'from-purple-600 to-pink-600',
       icon: <BarChart3 className="w-6 h-6" />,
@@ -89,6 +91,7 @@ const PricingPage = () => {
   ];
 
   const calculateSavings = (monthlyPrice: number, annualPrice: number) => {
+    if (monthlyPrice === null || annualPrice === null) return 0;
     const monthlyCost = monthlyPrice * 12;
     const savings = monthlyCost - annualPrice;
     const percentage = Math.round((savings / monthlyCost) * 100);
@@ -187,17 +190,29 @@ const PricingPage = () => {
                     
                     <div className="mt-6 mb-8">
                       <div className="flex items-baseline">
-                        <span className="text-4xl font-bold">
-                          ${billing === 'monthly' ? tier.monthlyPrice : tier.annualPrice}
-                        </span>
-                        <span className="text-gray-400 ml-2">
-                          {billing === 'monthly' ? '/month' : '/year'}
-                        </span>
+                        {tier.monthlyPrice !== null ? (
+                          <>
+                            <span className="text-4xl font-bold">
+                              ${billing === 'monthly' ? tier.monthlyPrice : tier.annualPrice}
+                            </span>
+                            <span className="text-gray-400 ml-2">
+                              {billing === 'monthly' ? '/month' : '/year'}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-4xl font-bold">{tier.priceDisplay}</span>
+                        )}
                       </div>
                       
-                      {billing === 'annual' && (
+                      {tier.monthlyPrice !== null && billing === 'annual' && (
                         <p className="text-bolt-blue text-sm mt-2">
                           Save {calculateSavings(tier.monthlyPrice, tier.annualPrice)}% with annual billing
+                        </p>
+                      )}
+                      
+                      {tier.name === 'Enterprise' && (
+                        <p className="text-bolt-blue text-sm mt-2">
+                          Tailored to your specific needs and scale
                         </p>
                       )}
                     </div>
@@ -303,11 +318,17 @@ const PricingPage = () => {
                       <td className="p-4 text-center bg-bolt-darkblue/30">Email & Chat</td>
                       <td className="p-4 text-center">Email, Chat & Phone</td>
                     </tr>
-                    <tr>
+                    <tr className="border-b border-white/5">
                       <td className="p-4 font-medium">Number of Agent Users</td>
                       <td className="p-4 text-center">1</td>
                       <td className="p-4 text-center bg-bolt-darkblue/30">3</td>
                       <td className="p-4 text-center">Unlimited</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 font-medium">Custom Training & Onboarding</td>
+                      <td className="p-4 text-center"><X className="inline w-5 h-5 text-gray-500" /></td>
+                      <td className="p-4 text-center bg-bolt-darkblue/30"><X className="inline w-5 h-5 text-gray-500" /></td>
+                      <td className="p-4 text-center"><CheckCircle2 className="inline w-5 h-5 text-bolt-blue" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -317,7 +338,7 @@ const PricingPage = () => {
         </section>
         
         {/* FAQ Section */}
-        <section className="py-20 bg-bolt-darker relative overflow-hidden">
+        <section className="py-20 bg-bolt-dark relative overflow-hidden">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl font-clash font-semibold text-center mb-12">
