@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { CheckCircle2, X, ArrowRight, Zap, Building2, MessageSquare, Calendar, FileText, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -31,7 +32,7 @@ const PricingPage = () => {
         'Phone Support',
         'Custom Integrations',
       ],
-      cta: 'Start Free Trial',
+      cta: 'Start 7-Day Trial',
       highlight: false,
       color: 'from-blue-400 to-blue-600',
       icon: <MessageSquare className="w-6 h-6" />,
@@ -56,7 +57,7 @@ const PricingPage = () => {
         'Phone Support',
         'Custom Integrations',
       ],
-      cta: 'Start Free Trial',
+      cta: 'Start 7-Day Trial',
       highlight: true,
       color: 'from-bolt-blue to-bolt-purple',
       icon: <Building2 className="w-6 h-6" />,
@@ -66,7 +67,7 @@ const PricingPage = () => {
       description: 'Tailored solutions for brokerages and large teams',
       monthlyPrice: null,
       annualPrice: null,
-      priceDisplay: 'Custom Pricing',
+      priceDisplay: 'Contact Us',
       features: [
         'AI Chatbot Assistant (Unlimited)',
         'Property Matching (Unlimited)',
@@ -118,7 +119,7 @@ const PricingPage = () => {
                 Choose the Perfect <span className="text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple">Plan</span> for Your Business
               </h1>
               <p className="text-lg text-gray-300">
-                All plans include a 14-day free trial with no credit card required. Upgrade, downgrade, or cancel anytime.
+                All plans include a 7-day trial with limited features. Credit card required. Try before you fully commit.
               </p>
               
               {/* Billing Toggle */}
@@ -362,8 +363,8 @@ const PricingPage = () => {
                 </div>
                 
                 <div className="glass-card rounded-xl p-6 hover:border-bolt-blue/20 transition-all duration-300">
-                  <h3 className="text-xl font-medium mb-3">How does the free trial work?</h3>
-                  <p className="text-gray-300">Our 14-day free trial gives you full access to all features of your selected plan. No credit card is required to start, and you can cancel anytime during the trial period.</p>
+                  <h3 className="text-xl font-medium mb-3">How does the trial work?</h3>
+                  <p className="text-gray-300">Our 7-day trial gives you access to a limited set of features from your selected plan. A valid credit card is required to start, but you won't be billed until the trial period ends.</p>
                 </div>
                 
                 <div className="glass-card rounded-xl p-6 hover:border-bolt-blue/20 transition-all duration-300">
@@ -386,16 +387,16 @@ const PricingPage = () => {
                 Ready to <span className="text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple">Transform</span> Your Real Estate Business?
               </h2>
               <p className="text-lg text-gray-300 mb-8">
-                Start your 14-day free trial today and experience the power of AI-driven real estate automation.
+                Start your 7-day trial today and experience the power of AI-driven real estate automation.
               </p>
               <a 
                 href="#trial" 
                 className="button-glow inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
               >
-                <span>Start Free Trial</span>
+                <span>Start Your Trial</span>
                 <ArrowRight className="ml-2 w-5 h-5" />
               </a>
-              <p className="text-sm text-gray-400 mt-4">No credit card required. Cancel anytime.</p>
+              <p className="text-sm text-gray-400 mt-4">Credit card required. Cancel anytime.</p>
             </div>
           </div>
         </section>
