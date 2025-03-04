@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MenuIcon, X } from 'lucide-react';
+import { MenuIcon, X, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const Navbar = () => {
@@ -45,13 +45,13 @@ const Navbar = () => {
           className="flex items-center space-x-2 group"
           aria-label="AgentX AI Home"
         >
-          <div className="w-10 h-10 rounded-full bg-bolt-blue flex items-center justify-center overflow-hidden group-hover:shadow-glow-blue transition-shadow duration-300">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple flex items-center justify-center overflow-hidden group-hover:shadow-glow-blue transition-shadow duration-300">
             <svg className="w-6 h-6 text-bolt-dark" fill="currentColor" viewBox="0 0 256 256">
               <path d="M212.92,75.5l-52,32A8,8,0,0,1,152,100V36a8,8,0,0,0-13.7-5.64l-112,112A8,8,0,0,0,32,156h76v64a8,8,0,0,0,13.7,5.64l112-112A8,8,0,0,0,232,100H156S213.72,75,212.92,75.5Z" />
             </svg>
           </div>
           <span className="text-xl font-clash font-semibold">
-            AGENT<span className="text-bolt-blue">X AI</span>
+            AGENT<span className="text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text">X AI</span>
           </span>
         </Link>
 
@@ -69,6 +69,24 @@ const Navbar = () => {
             Features
           </Link>
           <Link
+            to="/pricing"
+            className={cn("nav-link", isActive('/pricing') && "active")}
+          >
+            Pricing
+          </Link>
+          <Link
+            to="/about"
+            className={cn("nav-link", isActive('/about') && "active")}
+          >
+            About
+          </Link>
+          <Link
+            to="/blog"
+            className={cn("nav-link", isActive('/blog') && "active")}
+          >
+            Blog
+          </Link>
+          <Link
             to="/contact"
             className={cn("nav-link", isActive('/contact') && "active")}
           >
@@ -77,8 +95,9 @@ const Navbar = () => {
           <div className="w-px h-6 bg-white/10"></div>
           <a
             href="#demo"
-            className="button-glow px-6 py-2.5 bg-blue-purple-gradient rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
+            className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
           >
+            <Zap className="w-4 h-4 mr-2" />
             Get Started
           </a>
         </nav>
@@ -123,6 +142,33 @@ const Navbar = () => {
             Features
           </Link>
           <Link
+            to="/pricing"
+            className={cn(
+              "text-xl font-medium",
+              isActive('/pricing') ? "text-bolt-blue" : "text-white"
+            )}
+          >
+            Pricing
+          </Link>
+          <Link
+            to="/about"
+            className={cn(
+              "text-xl font-medium",
+              isActive('/about') ? "text-bolt-blue" : "text-white"
+            )}
+          >
+            About
+          </Link>
+          <Link
+            to="/blog"
+            className={cn(
+              "text-xl font-medium",
+              isActive('/blog') ? "text-bolt-blue" : "text-white"
+            )}
+          >
+            Blog
+          </Link>
+          <Link
             to="/contact"
             className={cn(
               "text-xl font-medium",
@@ -134,8 +180,9 @@ const Navbar = () => {
           <div className="w-32 h-px bg-white/10 my-4"></div>
           <a
             href="#demo"
-            className="w-full max-w-xs button-glow px-6 py-3 bg-blue-purple-gradient rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300"
+            className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
           >
+            <Zap className="w-4 h-4 mr-2" />
             Get Started
           </a>
         </nav>
