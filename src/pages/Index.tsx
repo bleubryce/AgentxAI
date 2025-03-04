@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const Index = () => {
   useEffect(() => {
-    document.title = "BoltAI - AI-Powered Real Estate Automation";
+    document.title = "AgentX AI - AI-Powered Real Estate Automation";
   }, []);
 
   return (

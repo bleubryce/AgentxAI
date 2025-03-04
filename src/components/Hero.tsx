@@ -133,7 +133,7 @@ const Hero = () => {
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
                       <h3 className="text-xl font-semibold">AI Automation Demo</h3>
-                      <p className="text-gray-400 text-sm">See how Bolt AI transforms your workflow</p>
+                      <p className="text-gray-400 text-sm">See how AgentX AI transforms your workflow</p>
                     </div>
                     <div className="w-12 h-12 rounded-full bg-bolt-blue/20 flex items-center justify-center">
                       <div className="w-8 h-8 rounded-full bg-bolt-blue flex items-center justify-center">

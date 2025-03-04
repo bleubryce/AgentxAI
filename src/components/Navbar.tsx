@@ -43,7 +43,7 @@ const Navbar = () => {
         <Link 
           to="/" 
           className="flex items-center space-x-2 group"
-          aria-label="Bolt AI Home"
+          aria-label="AgentX AI Home"
         >
           <div className="w-10 h-10 rounded-full bg-bolt-blue flex items-center justify-center overflow-hidden group-hover:shadow-glow-blue transition-shadow duration-300">
             <svg className="w-6 h-6 text-bolt-dark" fill="currentColor" viewBox="0 0 256 256">
@@ -51,7 +51,7 @@ const Navbar = () => {
             </svg>
           </div>
           <span className="text-xl font-clash font-semibold">
-            BOLT<span className="text-bolt-blue">AI</span>
+            AGENT<span className="text-bolt-blue">X AI</span>
           </span>
         </Link>
 
