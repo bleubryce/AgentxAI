@@ -28,6 +28,20 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
+export interface AnalyticsData {
+  totalLeads: number;
+  conversionRate: number;
+  averageResponseTime: number;
+  leadsPerDay: {
+    date: string;
+    count: number;
+  }[];
+  leadsByCategory: {
+    category: string;
+    count: number;
+  }[];
+}
+
 // Cache management
 const cache: Record<string, { data: any; expiry: number }> = {};
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
@@ -35,6 +49,10 @@ const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 // Helper functions
 const getAuthToken = (): string | null => {
   return localStorage.getItem('auth_token');
+};
+
+const isAuthenticated = (): boolean => {
+  return !!getAuthToken();
 };
 
 const clearCache = (key?: string) => {
@@ -53,6 +71,19 @@ async function apiRequest<T>(
   useCache: boolean = false,
   customHeaders: Record<string, string> = {}
 ): Promise<ApiResponse<T>> {
+  // Check if user is authenticated for protected endpoints
+  if (endpoint !== '/auth/login' && endpoint !== '/auth/register' && !isAuthenticated()) {
+    toast({
+      title: "Authentication Required",
+      description: "Please log in to access this feature",
+      variant: "destructive"
+    });
+    return {
+      success: false,
+      error: 'Authentication required'
+    };
+  }
+  
   const cacheKey = useCache ? `${method}:${endpoint}:${JSON.stringify(data || {})}` : '';
   
   // Check cache if enabled
@@ -86,10 +117,19 @@ async function apiRequest<T>(
       options.body = JSON.stringify(data);
     }
     
+    console.log(`Making API request to ${endpoint}`);
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-    const responseData = await response.json();
     
+    // For failed requests, try to parse JSON response first
     if (!response.ok) {
+      let errorMessage = `API request failed with status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch (e) {
+        // If JSON parsing fails, use default error message
+      }
+      
       // Handle authentication errors
       if (response.status === 401) {
         // Clear auth state if token is invalid
@@ -106,9 +146,11 @@ async function apiRequest<T>(
       
       return {
         success: false,
-        error: responseData.error || `API request failed with status: ${response.status}`
+        error: errorMessage
       };
     }
+    
+    const responseData = await response.json();
     
     // Cache successful response if caching is enabled
     if (useCache && cacheKey) {
@@ -124,9 +166,16 @@ async function apiRequest<T>(
     };
   } catch (error) {
     console.error(`API request failed: ${endpoint}`, error);
+    
+    // If it's a network error, provide a more user-friendly message
+    let errorMessage = 'Network error. Please check your connection.';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown API error'
+      error: errorMessage
     };
   }
 }
@@ -147,8 +196,8 @@ export const AIService = {
   },
   
   // AI Analytics endpoints
-  getAnalytics: async (): Promise<ApiResponse<any>> => {
-    return apiRequest<any>('/ai/analytics/summary', 'GET', undefined, true); // Cache analytics requests
+  getAnalytics: async (): Promise<ApiResponse<AnalyticsData>> => {
+    return apiRequest<AnalyticsData>('/ai/analytics/summary', 'GET', undefined, true); // Cache analytics requests
   },
   
   // Utility - clear API cache

@@ -40,11 +40,15 @@ const getUser = (): User | null => {
 const setUserAndToken = (user: User, token: string): void => {
   localStorage.setItem('user_info', JSON.stringify(user));
   localStorage.setItem('auth_token', token);
+  // Dispatch a custom event for auth state change
+  window.dispatchEvent(new Event('auth_state_change'));
 };
 
 const clearUserAndToken = (): void => {
   localStorage.removeItem('user_info');
   localStorage.removeItem('auth_token');
+  // Dispatch a custom event for auth state change
+  window.dispatchEvent(new Event('auth_state_change'));
 };
 
 // Authentication service
@@ -103,35 +107,46 @@ export const AuthService = {
   
   // Login with Google
   loginWithGoogle: async (): Promise<void> => {
-    // Open Google OAuth popup
-    const width = 500;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-    
-    window.open(
-      `${process.env.VITE_API_URL || 'https://api.agentx-ai.com/v1'}/auth/google`,
-      'Google Sign In',
-      `width=${width},height=${height},left=${left},top=${top}`
-    );
-    
-    // Listen for OAuth callback message
-    window.addEventListener('message', async (event) => {
-      // Verify origin for security
-      if (event.origin !== window.location.origin) return;
+    try {
+      // Open Google OAuth popup
+      const width = 500;
+      const height = 600;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
       
-      const { type, token, user } = event.data;
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.agentx-ai.com/v1';
       
-      if (type === 'oauth_success' && token && user) {
-        setUserAndToken(user, token);
-        toast({
-          title: "Google login successful",
-          description: `Welcome back, ${user.name}!`,
-        });
-        // Force refresh to update auth state
-        window.location.reload();
-      }
-    }, { once: true });
+      window.open(
+        `${apiUrl}/auth/google`,
+        'Google Sign In',
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+      
+      // Listen for OAuth callback message
+      window.addEventListener('message', async (event) => {
+        // Verify origin for security
+        if (event.origin !== window.location.origin) return;
+        
+        const { type, token, user } = event.data;
+        
+        if (type === 'oauth_success' && token && user) {
+          setUserAndToken(user, token);
+          toast({
+            title: "Google login successful",
+            description: `Welcome back, ${user.name}!`,
+          });
+          // Force refresh to update auth state
+          window.location.reload();
+        }
+      }, { once: true });
+    } catch (error) {
+      console.error('Google login error:', error);
+      toast({
+        title: "Login failed",
+        description: "Could not complete Google authentication",
+        variant: "destructive"
+      });
+    }
   },
   
   // Logout user
@@ -141,6 +156,17 @@ export const AuthService = {
       title: "Logged out",
       description: "You have been successfully logged out",
     });
+  },
+  
+  // Refresh token if needed
+  refreshToken: async (): Promise<boolean> => {
+    const response = await apiRequest<AuthResponse>('/auth/refresh', 'POST');
+    
+    if (response.success && response.data) {
+      setUserAndToken(response.data.user, response.data.token);
+      return true;
+    }
+    return false;
   }
 };
 
@@ -148,9 +174,25 @@ export const AuthService = {
 export const createAuthListener = () => {
   // Setup listener for auth token changes (useful for multiple tabs)
   window.addEventListener('storage', (event) => {
-    if (event.key === 'auth_token' && !event.newValue) {
-      // Another tab logged out, refresh the page
-      window.location.reload();
+    if (event.key === 'auth_token') {
+      // Token changed in another tab
+      if (!event.newValue) {
+        // Another tab logged out, refresh the page
+        window.location.reload();
+      }
     }
   });
+  
+  // Check token validity on page load
+  const checkTokenValidity = async () => {
+    if (AuthService.isAuthenticated()) {
+      // Silently attempt to refresh token in the background
+      await AuthService.refreshToken();
+    }
+  };
+  
+  checkTokenValidity();
+  
+  // Set up periodic token refresh (every 30 minutes)
+  setInterval(checkTokenValidity, 30 * 60 * 1000);
 };

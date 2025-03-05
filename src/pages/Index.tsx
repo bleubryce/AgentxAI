@@ -6,9 +6,11 @@ import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { createAuthListener } from "@/services/auth";
+import { AIService } from "@/services/api";
 
 const Index = () => {
   useEffect(() => {
+    // Page title and metadata
     document.title = "AgentX AI - AI-Powered Real Estate Automation";
     
     // Add meta description for AI-related keywords
@@ -35,6 +37,11 @@ const Index = () => {
 
     // Initialize auth listener
     createAuthListener();
+    
+    // Preload analytics data to improve performance when users navigate to dashboard
+    if (localStorage.getItem('auth_token')) {
+      AIService.getAnalytics().catch(console.error);
+    }
   }, []);
 
   return (
