@@ -2,6 +2,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Bot, Building, Calendar, CheckCircle, XCircle, Send, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import { AuthService } from '@/services/auth';
+import { AIService, ChatMessage as AIChatMessage } from '@/services/api';
+import AuthModal from './AuthModal';
 
 type ChatMessage = {
   id: string;
@@ -31,8 +35,25 @@ const CallToAction = () => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   
+  // Auth state
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  const { toast } = useToast();
   const chatEndRef = useRef<HTMLDivElement>(null);
   const cachedResponses = useRef<Record<string, string>>({});
+  const conversationId = useRef<string | undefined>(undefined);
+  
+  // Check authentication status on mount
+  useEffect(() => {
+    setIsAuthenticated(AuthService.isAuthenticated());
+    // Set up auth listener
+    const handleStorageChange = () => {
+      setIsAuthenticated(AuthService.isAuthenticated());
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
   
   // Scroll to bottom of chat when messages change
   useEffect(() => {
@@ -41,7 +62,18 @@ const CallToAction = () => {
     }
   }, [chatMessages]);
   
-  // Simulate generating a lead
+  // Pre-fill form if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const user = AuthService.getCurrentUser();
+      if (user) {
+        setName(user.name || '');
+        setEmail(user.email || '');
+      }
+    }
+  }, [isAuthenticated]);
+  
+  // Generate lead with AI
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -50,45 +82,61 @@ const CallToAction = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call to AI service
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // If not authenticated, show auth modal
+      if (!isAuthenticated) {
+        setShowAuthModal(true);
+        setIsSubmitting(false);
+        return;
+      }
       
-      // AI lead scoring and classification (simulated)
-      const leadScore = Math.floor(Math.random() * 100);
-      const leadCategory = leadScore > 70 ? 'hot' : leadScore > 40 ? 'warm' : 'cold';
-      
-      console.log('AI Lead Generated:', {
+      // Call AI lead generation API
+      const response = await AIService.generateLead({
         name,
         email,
-        company,
-        score: leadScore,
-        category: leadCategory,
-        timestamp: new Date().toISOString()
+        company
       });
       
-      // Show success state
-      setSuccess(true);
-      
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setName('');
-        setEmail('');
-        setCompany('');
-        setSuccess(false);
-        setIsSubmitting(false);
-      }, 3000);
-      
+      if (response.success && response.data) {
+        // Success handling
+        toast({
+          title: "Lead Generated",
+          description: `Your trial request has been processed with score: ${response.data.score}/100`,
+        });
+        
+        setSuccess(true);
+        
+        // Reset form after delay
+        setTimeout(() => {
+          setName('');
+          setEmail('');
+          setCompany('');
+          setSuccess(false);
+        }, 3000);
+      } else {
+        // Error handling
+        toast({
+          title: "Error",
+          description: response.error || "Failed to process your request",
+          variant: "destructive" 
+        });
+      }
     } catch (error) {
       console.error('Error generating lead:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
     }
   };
   
-  // Handle sending a chat message
+  // Send chat message to AI
   const handleSendMessage = async () => {
     if (!currentMessage.trim()) return;
     
-    // Add user message
+    // Add user message to chat
     const userMessageId = Date.now().toString();
     const userMessage: ChatMessage = {
       id: userMessageId,
@@ -102,49 +150,62 @@ const CallToAction = () => {
     setIsTyping(true);
     
     try {
-      let botResponse: string;
-      
-      // Check cache for identical queries to prevent duplicate AI requests
-      if (cachedResponses.current[currentMessage.toLowerCase()]) {
-        botResponse = cachedResponses.current[currentMessage.toLowerCase()];
+      // Check cache for identical queries
+      const lowerCaseMessage = currentMessage.toLowerCase();
+      if (cachedResponses.current[lowerCaseMessage]) {
         // Short delay to simulate thinking
         await new Promise(resolve => setTimeout(resolve, 500));
-      } else {
-        // Simulate API call to AI service
-        await new Promise(resolve => setTimeout(resolve, 1500));
         
-        // Simulate different responses based on message content
-        if (currentMessage.toLowerCase().includes('pricing')) {
-          botResponse = 'We offer several pricing plans starting at $49/month for individuals, $129/month for teams, and custom enterprise pricing. All plans include a 7-day trial with limited features. Would you like more details on any specific plan?';
-        } else if (currentMessage.toLowerCase().includes('feature') || currentMessage.toLowerCase().includes('can you')) {
-          botResponse = 'AgentX AI offers powerful features including AI-powered lead generation, property matching, automated follow-ups, market trend analysis, and a virtual showing assistant. Which feature would you like to learn more about?';
-        } else if (currentMessage.toLowerCase().includes('trial')) {
-          botResponse = 'Our 7-day trial gives you access to a limited set of features from your selected plan. A valid credit card is required to start, but you won\'t be billed until the trial period ends.';
-        } else {
-          botResponse = 'Thank you for your interest in AgentX AI! I can help you learn about our AI-powered tools for real estate professionals. Feel free to ask about features, pricing, or how we can help grow your business.';
-        }
-        
-        // Cache the response
-        cachedResponses.current[currentMessage.toLowerCase()] = botResponse;
-      }
-      
-      // Add bot response after slight delay
-      setTimeout(() => {
+        // Add cached response
         const botMessageId = (Date.now() + 1).toString();
         const botMessage: ChatMessage = {
           id: botMessageId,
-          text: botResponse,
+          text: cachedResponses.current[lowerCaseMessage],
           isBot: true,
           timestamp: new Date()
         };
         
         setChatMessages(prev => [...prev, botMessage]);
         setIsTyping(false);
-      }, 1000);
+        return;
+      }
       
+      // Call AI chat API
+      const response = await AIService.getChatResponse(currentMessage, conversationId.current);
+      
+      if (response.success && response.data) {
+        // Store conversation ID for context
+        if (response.data.id && !conversationId.current) {
+          conversationId.current = response.data.id;
+        }
+        
+        // Cache the response
+        cachedResponses.current[lowerCaseMessage] = response.data.text;
+        
+        // Add bot response
+        const botMessageId = (Date.now() + 1).toString();
+        const botMessage: ChatMessage = {
+          id: botMessageId,
+          text: response.data.text,
+          isBot: true,
+          timestamp: new Date()
+        };
+        
+        setChatMessages(prev => [...prev, botMessage]);
+      } else {
+        // Handle error
+        const errorMessageId = (Date.now() + 1).toString();
+        const errorMessage: ChatMessage = {
+          id: errorMessageId,
+          text: 'Sorry, I encountered an error. Please try again.',
+          isBot: true,
+          timestamp: new Date()
+        };
+        
+        setChatMessages(prev => [...prev, errorMessage]);
+      }
     } catch (error) {
       console.error('Error getting AI response:', error);
-      setIsTyping(false);
       
       // Add error message
       const errorMessageId = (Date.now() + 1).toString();
@@ -156,9 +217,12 @@ const CallToAction = () => {
       };
       
       setChatMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
     }
   };
   
+  // Use existing UI template but with our new service functions
   return (
     <section id="demo" className="py-24 relative overflow-hidden">
       {/* Background elements */}
@@ -427,12 +491,15 @@ const CallToAction = () => {
                 </button>
               </div>
               <p className="text-xs text-gray-400 mt-2 text-center">
-                AI responses are simulated for demonstration purposes
+                AI responses powered by advanced natural language processing
               </p>
             </div>
           </div>
         )}
       </div>
+      
+      {/* Auth Modal */}
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
       
       {/* Bottom curve */}
       <div className="absolute bottom-0 left-0 w-full h-20 bg-bolt-dark" style={{ clipPath: 'ellipse(75% 100% at 50% 100%)' }}></div>

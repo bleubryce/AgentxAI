@@ -5,6 +5,7 @@ import Features from "@/components/Features";
 import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { createAuthListener } from "@/services/auth";
 
 const Index = () => {
   useEffect(() => {
@@ -31,6 +32,9 @@ const Index = () => {
       meta.content = "AI real estate, property AI, real estate automation, AI lead generation, real estate chatbot, property matching AI";
       document.head.appendChild(meta);
     }
+
+    // Initialize auth listener
+    createAuthListener();
   }, []);
 
   return (
