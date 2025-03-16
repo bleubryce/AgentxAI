@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { AuthService } from '@/services/auth';
-import { X, Mail, Lock, User as UserIcon, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User as UserIcon, ArrowRight, Apple } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -80,6 +80,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       toast({
         title: "Google Login Error",
         description: "Failed to login with Google. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleAppleLogin = async () => {
+    try {
+      await AuthService.loginWithApple();
+      // The callback will handle the result
+    } catch (error) {
+      console.error('Apple login error:', error);
+      toast({
+        title: "Apple Login Error",
+        description: "Failed to login with Apple. Please try again.",
         variant: "destructive"
       });
     }
@@ -185,19 +199,30 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             <div className="flex-grow border-t border-white/10"></div>
           </div>
           
-          <Button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full border border-gray-300"
-          >
-            <svg className="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M12 4.93C14.24 4.93 16.18 5.78 17.66 7.2l2.86-2.82C18.63 2.5 15.5 1 12 1 7.35 1 3.41 3.8 1.3 7.84l3.27 2.55C5.55 7.09 8.53 4.93 12 4.93z"/>
-              <path fill="#34A853" d="M23 12c0-.83-.07-1.64-.22-2.41H12v4.58h6.23c-.28 1.48-1.08 2.73-2.32 3.59l3.22 2.51c1.89-1.73 2.99-4.3 2.99-7.27z"/>
-              <path fill="#FBBC05" d="M4.57 10.39c-.32.89-.5 1.84-.5 2.83s.18 1.94.5 2.83l-3.27 2.55C.44 16.36 0 14.25 0 12s.44-4.36 1.3-6.22l3.27 2.55z"/>
-              <path fill="#EA4335" d="M12 23c3.5 0 6.63-1.5 8.52-4.13l-3.22-2.51c-.91.65-2.12.98-3.48.98-3.47 0-6.45-2.16-7.43-5.49l-3.27 2.55C5.41 18.2 8.53 23 12 23z"/>
-            </svg>
-            Continue with Google
-          </Button>
+          <div className="space-y-3">
+            <Button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="w-full bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full border border-gray-300"
+            >
+              <svg className="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M12 4.93C14.24 4.93 16.18 5.78 17.66 7.2l2.86-2.82C18.63 2.5 15.5 1 12 1 7.35 1 3.41 3.8 1.3 7.84l3.27 2.55C5.55 7.09 8.53 4.93 12 4.93z"/>
+                <path fill="#34A853" d="M23 12c0-.83-.07-1.64-.22-2.41H12v4.58h6.23c-.28 1.48-1.08 2.73-2.32 3.59l3.22 2.51c1.89-1.73 2.99-4.3 2.99-7.27z"/>
+                <path fill="#FBBC05" d="M4.57 10.39c-.32.89-.5 1.84-.5 2.83s.18 1.94.5 2.83l-3.27 2.55C.44 16.36 0 14.25 0 12s.44-4.36 1.3-6.22l3.27 2.55z"/>
+                <path fill="#EA4335" d="M12 23c3.5 0 6.63-1.5 8.52-4.13l-3.22-2.51c-.91.65-2.12.98-3.48.98-3.47 0-6.45-2.16-7.43-5.49l-3.27 2.55C5.41 18.2 8.53 23 12 23z"/>
+              </svg>
+              Continue with Google
+            </Button>
+            
+            <Button
+              type="button"
+              onClick={handleAppleLogin}
+              className="w-full bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-full border border-gray-800"
+            >
+              <Apple className="mr-2 h-5 w-5" />
+              Continue with Apple
+            </Button>
+          </div>
           
           <div className="text-center text-sm">
             {mode === 'login' ? (

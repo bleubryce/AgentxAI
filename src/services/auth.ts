@@ -1,4 +1,3 @@
-
 import { toast } from "@/hooks/use-toast";
 import apiRequest from "./api";
 
@@ -165,6 +164,50 @@ export const AuthService = {
       toast({
         title: "Login failed",
         description: "Could not complete Google authentication",
+        variant: "destructive"
+      });
+    }
+  },
+  
+  // Login with Apple
+  loginWithApple: async (): Promise<void> => {
+    try {
+      // Open Apple OAuth popup
+      const width = 500;
+      const height = 600;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
+      
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.agentx-ai.com/v1';
+      
+      window.open(
+        `${apiUrl}/auth/apple`,
+        'Apple Sign In',
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+      
+      // Listen for OAuth callback message
+      window.addEventListener('message', async (event) => {
+        // Verify origin for security
+        if (event.origin !== window.location.origin) return;
+        
+        const { type, token, user } = event.data;
+        
+        if (type === 'oauth_success' && token && user) {
+          setUserAndToken(user, token);
+          toast({
+            title: "Apple login successful",
+            description: `Welcome back, ${user.name}!`,
+          });
+          // Force refresh to update auth state
+          window.location.reload();
+        }
+      }, { once: true });
+    } catch (error) {
+      console.error('Apple login error:', error);
+      toast({
+        title: "Login failed",
+        description: "Could not complete Apple authentication",
         variant: "destructive"
       });
     }
