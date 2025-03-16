@@ -1,6 +1,6 @@
-
 import apiRequest, { ApiResponse } from "./api";
 import { AuthService } from "./auth";
+import { toast } from "@/hooks/use-toast";
 
 // Agent Feature Types
 export type AgentFeature = 
