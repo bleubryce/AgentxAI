@@ -14,6 +14,7 @@ import CareersPage from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
+import TestAuth from "./pages/TestAuth";
 import { AuthService, createAuthListener } from "./services/auth";
 
 // Create a new query client with optimized settings
@@ -78,6 +79,7 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/careers" element={<CareersPage />} />
+          <Route path="/test-auth" element={<TestAuth />} />
           
           {/* Protected routes - only for authenticated clients */}
           <Route 
