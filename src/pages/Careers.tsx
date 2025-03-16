@@ -5,7 +5,7 @@ import { Briefcase, MapPin, Computer, HandCoins, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import AuthModal from '../components/AuthModal';
+import ResumeDialog from '../components/ResumeDialog';
 import { useState } from 'react';
 
 const CareersList = [
@@ -69,10 +69,12 @@ const CareersList = [
 ];
 
 const CareersPage = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isResumeDialogOpen, setIsResumeDialogOpen] = useState(false);
+  const [selectedJobTitle, setSelectedJobTitle] = useState("");
 
-  const handleApply = () => {
-    setIsAuthModalOpen(true);
+  const handleApply = (jobTitle: string) => {
+    setSelectedJobTitle(jobTitle);
+    setIsResumeDialogOpen(true);
   };
 
   return (
@@ -131,7 +133,7 @@ const CareersPage = () => {
               </CardContent>
               <CardFooter>
                 <Button 
-                  onClick={handleApply}
+                  onClick={() => handleApply(job.title)}
                   className="w-full button-glow bg-gradient-to-r from-bolt-blue to-bolt-purple hover:shadow-glow-blue transition-all duration-300"
                 >
                   <Briefcase className="mr-2 h-5 w-5" />
@@ -153,7 +155,7 @@ const CareersPage = () => {
             real estate professionals transform their business.
           </p>
           <Button 
-            onClick={handleApply}
+            onClick={() => handleApply("General Application")}
             className="button-glow bg-gradient-to-r from-bolt-blue to-bolt-purple hover:shadow-glow-blue transition-all duration-300"
             size="lg"
           >
@@ -164,9 +166,10 @@ const CareersPage = () => {
       
       <Footer />
       
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
+      <ResumeDialog 
+        isOpen={isResumeDialogOpen} 
+        onClose={() => setIsResumeDialogOpen(false)} 
+        jobTitle={selectedJobTitle}
       />
     </div>
   );

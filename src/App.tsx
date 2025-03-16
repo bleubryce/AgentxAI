@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,7 +15,7 @@ import CareersPage from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
-import { AuthService } from "./services/auth";
+import { AuthService, createAuthListener } from "./services/auth";
 
 // Create a new query client with optimized settings
 const queryClient = new QueryClient({
@@ -26,6 +27,9 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Initialize auth listener
+createAuthListener();
 
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -67,6 +71,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public routes - no authentication required */}
           <Route path="/" element={<Index />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/pricing" element={<PricingPage />} />
@@ -75,7 +80,7 @@ const App = () => (
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/careers" element={<CareersPage />} />
           
-          {/* Protected routes */}
+          {/* Protected routes - only for authenticated clients */}
           <Route 
             path="/dashboard/*" 
             element={
