@@ -8,6 +8,12 @@ export interface User {
   email: string;
   avatar?: string;
   role: 'admin' | 'user';
+  subscription?: {
+    plan: 'free' | 'basic' | 'premium' | 'enterprise';
+    status: 'active' | 'inactive' | 'trial';
+    expiresAt: string;
+    features: string[];
+  };
 }
 
 export interface LoginCredentials {
@@ -61,6 +67,21 @@ export const AuthService = {
   // Check if user is authenticated
   isAuthenticated: (): boolean => {
     return !!localStorage.getItem('auth_token');
+  },
+
+  // Check if user has active subscription
+  hasActiveSubscription: (): boolean => {
+    const user = getUser();
+    if (!user || !user.subscription) return false;
+    return user.subscription.status === 'active' || user.subscription.status === 'trial';
+  },
+
+  // Check if user has access to specific feature
+  hasFeatureAccess: (featureName: string): boolean => {
+    const user = getUser();
+    if (!user || !user.subscription) return false;
+    if (user.subscription.status !== 'active' && user.subscription.status !== 'trial') return false;
+    return user.subscription.features.includes(featureName);
   },
   
   // Login with email and password

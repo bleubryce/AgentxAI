@@ -13,6 +13,7 @@ import ContactPage from "./pages/Contact";
 import BlogPage from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import Agents from "./pages/Agents";
 import { AuthService } from "./services/auth";
 
 // Create a new query client with optimized settings
@@ -73,12 +74,21 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           
-          {/* Protected route for dashboard */}
+          {/* Protected routes */}
           <Route 
             path="/dashboard/*" 
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/agents/*" 
+            element={
+              <ProtectedRoute>
+                <Agents />
               </ProtectedRoute>
             } 
           />
