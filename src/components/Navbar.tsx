@@ -87,6 +87,12 @@ const Navbar = () => {
             Blog
           </Link>
           <Link
+            to="/careers"
+            className={cn("nav-link", isActive('/careers') && "active")}
+          >
+            Careers
+          </Link>
+          <Link
             to="/contact"
             className={cn("nav-link", isActive('/contact') && "active")}
           >
@@ -167,6 +173,15 @@ const Navbar = () => {
             )}
           >
             Blog
+          </Link>
+          <Link
+            to="/careers"
+            className={cn(
+              "text-xl font-medium",
+              isActive('/careers') ? "text-bolt-blue" : "text-white"
+            )}
+          >
+            Careers
           </Link>
           <Link
             to="/contact"
