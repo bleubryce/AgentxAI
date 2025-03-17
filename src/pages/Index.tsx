@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { motion, AnimatePresence } from "framer-motion";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import CallToAction from "@/components/CallToAction";
@@ -10,9 +11,15 @@ import { MultiAgentChatPromo } from "@/components/MultiAgentChatPromo";
 const Index = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [revealedSections, setRevealedSections] = useState<string[]>([]);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Track scroll position
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
     
     // Observe elements with the reveal-animation class
     const observer = new IntersectionObserver((entries) => {
@@ -27,8 +34,69 @@ const Index = () => {
       observer.observe(el);
     });
     
-    return () => observer.disconnect();
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  // Generate particles for luxury effect
+  const renderGoldParticles = () => {
+    const particles = [];
+    for (let i = 0; i < 15; i++) {
+      const size = Math.random() * 10 + 5;
+      const left = Math.random() * 100;
+      const top = Math.random() * 100;
+      const delay = Math.random() * 5;
+      
+      particles.push(
+        <div 
+          key={i}
+          className="particle" 
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+            left: `${left}%`,
+            top: `${top}%`,
+            animationDelay: `${delay}s`
+          }}
+        />
+      );
+    }
+    return particles;
+  };
+
+  // Generate scrolling decoration
+  const renderScrollIndicator = () => {
+    if (scrollY < 100) {
+      return (
+        <motion.div 
+          className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 2 }}
+        >
+          <p className="text-white/60 text-sm mb-2">Scroll Down</p>
+          <motion.div 
+            className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-1"
+            animate={{ 
+              boxShadow: ["0 0 0 rgba(255,192,0,0)", "0 0 10px rgba(255,192,0,0.5)", "0 0 0 rgba(255,192,0,0)"]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <motion.div 
+              className="w-1.5 h-1.5 bg-gold-500 rounded-full"
+              animate={{ y: [0, 13, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+          </motion.div>
+        </motion.div>
+      );
+    }
+    return null;
+  };
 
   return (
     <>
@@ -43,20 +111,49 @@ const Index = () => {
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
       
-      <main className="overflow-hidden">
+      <main className="overflow-hidden relative">
+        {/* Gold Particles */}
+        <div className="fixed inset-0 pointer-events-none z-10">
+          {renderGoldParticles()}
+        </div>
+        
+        {/* Scroll Indicator */}
+        {renderScrollIndicator()}
+        
         <Hero />
         
-        <div id="multi-agent-section" className={`reveal-animation ${revealedSections.includes('multi-agent-section') ? 'revealed' : ''}`}>
+        <motion.div 
+          id="multi-agent-section" 
+          className={`reveal-animation ${revealedSections.includes('multi-agent-section') ? 'revealed' : ''}`}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
           <MultiAgentChatPromo />
-        </div>
+        </motion.div>
         
-        <div id="features-section" className={`reveal-animation ${revealedSections.includes('features-section') ? 'revealed' : ''}`}>
+        <motion.div 
+          id="features-section" 
+          className={`reveal-animation ${revealedSections.includes('features-section') ? 'revealed' : ''}`}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
           <Features />
-        </div>
+        </motion.div>
         
-        <div id="cta-section" className={`reveal-animation ${revealedSections.includes('cta-section') ? 'revealed' : ''}`}>
+        <motion.div 
+          id="cta-section" 
+          className={`reveal-animation ${revealedSections.includes('cta-section') ? 'revealed' : ''}`}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+        >
           <CallToAction />
-        </div>
+        </motion.div>
         
         <Footer />
       </main>
