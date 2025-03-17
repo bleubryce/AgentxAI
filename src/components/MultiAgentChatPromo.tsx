@@ -1,6 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
-import { ArrowRight, Bot, Sparkles, Zap, Brain, Network } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { ArrowRight, Bot, MessageSquare, Users, Sparkles, Brain, Cpu, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
@@ -12,8 +12,10 @@ export const MultiAgentChatPromo = () => {
   const [currentAgent, setCurrentAgent] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedAgentIndex, setSelectedAgentIndex] = useState(0);
+  const [activeAgent, setActiveAgent] = useState<number | null>(null);
+  const animationRef = useRef<HTMLDivElement>(null);
   
+  // Define our agents with all required properties
   const agents: AvailableAgent[] = [
     { 
       id: 'data-analyst', 
@@ -38,29 +40,14 @@ export const MultiAgentChatPromo = () => {
       description: 'Offers insights on property selection and investment',
       capabilities: ['property-valuation', 'investment-analysis', 'location-assessment'],
       model: 'gpt-4o'
-    }
-  ];
-  
-  const chatMessages = [
-    {
-      sender: 'user',
-      text: 'I'm looking for an investment property in Austin with good rental yield potential.',
-      icon: '👤'
     },
-    {
-      sender: 'data-analyst',
-      text: 'Based on my analysis of the Austin market, the East Downtown area has shown a 12% average annual appreciation with median rental yields of 7.2% over the past 3 years.',
-      icon: '📊'
-    },
-    {
-      sender: 'marketing-expert',
-      text: 'Looking at market trends, Austin's East Downtown is experiencing increased demand from young professionals, with rental listings spending 32% less time on market compared to last year.',
-      icon: '📈'
-    },
-    {
-      sender: 'property-advisor',
-      text: 'I can recommend 3 specific properties in East Downtown that match your investment criteria, with cap rates ranging from 6.8% to 8.2%. Would you like me to provide more details on these options?',
-      icon: '🏠'
+    { 
+      id: 'legal-consultant', 
+      name: 'Legal Consultant', 
+      emoji: '⚖️', 
+      description: 'Provides guidance on real estate legal matters',
+      capabilities: ['contract-review', 'legal-compliance', 'regulation-updates'],
+      model: 'gpt-4o'
     }
   ];
   
@@ -83,225 +70,187 @@ export const MultiAgentChatPromo = () => {
     }, 5000);
     
     return () => clearInterval(typingTimer);
+  }, [agents.length]);
+  
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!animationRef.current) return;
+      
+      const { left, top, width, height } = animationRef.current.getBoundingClientRect();
+      const x = (e.clientX - left) / width - 0.5;
+      const y = (e.clientY - top) / height - 0.5;
+      
+      const elements = document.querySelectorAll('.agent-orbit');
+      elements.forEach((el, i) => {
+        const htmlEl = el as HTMLElement;
+        htmlEl.style.transform = `translate(${x * 20 * (i + 1)}px, ${y * 20 * (i + 1)}px)`;
+      });
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
   }, []);
   
+  const handleAgentHover = (index: number) => {
+    setActiveAgent(index);
+  };
+  
+  const handleAgentLeave = () => {
+    setActiveAgent(null);
+  };
+  
   return (
-    <section className={`relative min-h-screen py-20 transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'} overflow-hidden bg-gradient-to-b from-bolt-darker via-bolt-darkblue/50 to-bolt-darker`}>
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-[800px] h-[800px] rounded-full bg-bolt-blue/5 blur-[100px]"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] rounded-full bg-bolt-purple/5 blur-[80px]"></div>
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-bolt-blue/20 to-transparent"></div>
-      </div>
-      
-      {/* Floating elements */}
-      <div className="absolute top-20 left-10 animate-float opacity-20">
-        <Sparkles className="text-bolt-blue w-8 h-8" />
-      </div>
-      <div className="absolute bottom-40 right-20 animate-float opacity-20">
-        <Network className="text-bolt-purple w-12 h-12" />
-      </div>
-      <div className="absolute top-1/2 left-5 animate-float opacity-20">
-        <Brain className="text-bolt-blue w-10 h-10" />
-      </div>
-      
-      <div className="container relative z-10 mx-auto px-4 lg:px-8">
+    <section ref={animationRef} className={`py-24 relative transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          {/* Hexagonal section header */}
-          <div className="relative flex justify-center mb-16">
-            <div className="absolute w-24 h-24 bg-bolt-blue/10 rotate-45 transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"></div>
-            <div className="relative z-10 text-center">
-              <div className="inline-flex items-center px-4 py-1 rounded-full border border-bolt-blue/30 bg-bolt-darker mb-4">
-                <Zap className="w-4 h-4 mr-2 text-bolt-blue" />
-                <span className="text-sm font-medium">AI Collaboration</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-clash font-bold leading-none mb-4">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-bolt-blue via-white to-bolt-purple">
-                  AI Symphony
-                </span>
-              </h2>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                Multiple specialized AI agents working in harmony to solve your complex real estate challenges
-              </p>
+          <div className="text-center mb-16 space-y-4 relative z-10">
+            <div className="inline-flex items-center space-x-2 bg-jet-800/70 backdrop-blur-sm px-4 py-2 rounded-full border border-gold-500/20 mb-4">
+              <Sparkles className="w-4 h-4 text-gold-500" />
+              <span className="text-sm font-medium">Next-Gen AI Collaboration</span>
             </div>
+            
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-clash font-semibold leading-tight text-shadow">
+              <span className="block">Experience</span>
+              <span className="text-gradient font-playfair">Multi-Agent Intelligence</span>
+            </h2>
+            
+            <p className="text-lg text-gray-300 max-w-xl mx-auto">
+              Our revolutionary multi-agent system brings together specialized AI experts that collaborate to deliver unparalleled insights for real estate success.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Agent visualization - Left side */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative bg-bolt-darker/80 backdrop-blur-sm rounded-2xl border border-white/10 p-6 overflow-hidden">
-                {/* Central agent hub visualization */}
-                <div className="relative flex justify-center items-center h-[400px]">
-                  {/* Central node */}
-                  <div className="absolute z-20 w-20 h-20 rounded-full bg-gradient-to-br from-bolt-blue to-bolt-purple p-1">
-                    <div className="w-full h-full rounded-full bg-bolt-darker flex items-center justify-center">
-                      <Bot className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  
-                  {/* Connecting lines */}
-                  {agents.map((agent, index) => {
-                    const angle = (index * (360 / agents.length)) * (Math.PI / 180);
-                    const x = Math.cos(angle) * 120;
-                    const y = Math.sin(angle) * 120;
-                    
-                    return (
-                      <React.Fragment key={agent.id}>
-                        <div 
-                          className="absolute w-px bg-gradient-to-b from-bolt-blue/30 to-bolt-purple/30" 
-                          style={{
-                            left: 'calc(50% + 0px)',
-                            top: 'calc(50% + 0px)',
-                            height: '120px',
-                            transformOrigin: 'top',
-                            transform: `rotate(${angle + Math.PI/2}rad)`,
-                          }}
-                        ></div>
-                      </React.Fragment>
-                    );
-                  })}
-                  
-                  {/* Agent nodes */}
-                  {agents.map((agent, index) => {
-                    const angle = (index * (360 / agents.length)) * (Math.PI / 180);
-                    const x = Math.cos(angle) * 120;
-                    const y = Math.sin(angle) * 120;
-                    
-                    const isSelected = selectedAgentIndex === index;
-                    
-                    return (
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            <div className="lg:w-1/2 order-2 lg:order-1">
+              <div className="space-y-8">
+                <h3 className="text-2xl md:text-3xl font-clash font-semibold leading-tight text-shadow">
+                  <span className="text-white">Transform Your Decision-Making with</span>
+                  <span className="text-gradient block mt-2">Collaborative AI Intelligence</span>
+                </h3>
+                
+                <p className="text-lg text-gray-300">
+                  Our multi-agent system delivers comprehensive insights no single AI could provide. Watch as specialized AI experts work together in real-time to solve complex real estate challenges.
+                </p>
+                
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    {agents.map((agent, index) => (
                       <div 
-                        key={agent.id}
-                        className={`absolute z-10 flex items-center justify-center w-16 h-16 rounded-full cursor-pointer transition-all duration-500 ${
-                          isSelected ? 'scale-110 bg-gradient-to-br from-bolt-blue to-bolt-purple' : 'bg-gradient-to-br from-bolt-blue/20 to-bolt-purple/20'
-                        }`}
-                        style={{
-                          left: `calc(50% + ${x}px - 30px)`,
-                          top: `calc(50% + ${y}px - 30px)`,
-                        }}
-                        onClick={() => setSelectedAgentIndex(index)}
+                        key={agent.id} 
+                        className={`flex items-center space-x-4 p-4 bg-jet-900/60 rounded-xl border ${activeAgent === index ? 'border-gold-500' : 'border-white/10'} hover:border-gold-500/50 transition-all duration-300 cursor-pointer`}
+                        onMouseEnter={() => handleAgentHover(index)}
+                        onMouseLeave={handleAgentLeave}
                       >
-                        <div className={`w-14 h-14 rounded-full ${isSelected ? 'bg-bolt-darker/90' : 'bg-bolt-darker/50'} flex items-center justify-center`}>
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-jet-800 to-jet-900 flex items-center justify-center border border-gold-500/30">
                           <span className="text-xl">{agent.emoji}</span>
                         </div>
+                        <div>
+                          <h4 className="font-medium text-gold-500">{agent.name}</h4>
+                          <p className="text-sm text-gray-400 line-clamp-1">{agent.description}</p>
+                        </div>
                       </div>
-                    );
-                  })}
-                  
-                  {/* Pulse animations */}
-                  <div className="absolute w-40 h-40 rounded-full bg-bolt-blue/5 animate-pulse-soft"></div>
-                  <div className="absolute w-80 h-80 rounded-full bg-bolt-purple/5 animate-pulse-soft" style={{ animationDelay: '0.5s' }}></div>
-                  <div className="absolute w-120 h-120 rounded-full bg-bolt-blue/3 animate-pulse-soft" style={{ animationDelay: '1s' }}></div>
-                </div>
-                
-                {/* Selected agent info */}
-                <div className="mt-8 text-center">
-                  <h3 className="text-xl font-semibold text-bolt-blue mb-2">{agents[selectedAgentIndex].name}</h3>
-                  <p className="text-gray-300">{agents[selectedAgentIndex].description}</p>
-                  <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    {agents[selectedAgentIndex].capabilities.map((capability) => (
-                      <span 
-                        key={capability} 
-                        className="inline-block px-3 py-1 text-xs rounded-full bg-bolt-blue/10 border border-bolt-blue/20"
-                      >
-                        {capability.split('-').join(' ')}
-                      </span>
                     ))}
                   </div>
                 </div>
+                
+                <Button 
+                  onClick={() => navigate('/multi-agent-chat')} 
+                  className="premium-button group mt-4 w-full sm:w-auto"
+                >
+                  Experience Multi-Agent Chat
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
             </div>
             
-            {/* Chat simulation - Right side */}
-            <div className="lg:col-span-7">
-              <div className="relative bg-gradient-to-br from-bolt-darkblue/50 to-bolt-darker/90 rounded-2xl border border-white/10 p-6 overflow-hidden backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="flex -space-x-2">
-                      {agents.map((agent, index) => (
-                        <div key={agent.id} className="w-8 h-8 rounded-full bg-bolt-darker flex items-center justify-center border-2 border-bolt-darker">
-                          <span className="text-sm">{agent.emoji}</span>
+            <div className="lg:w-1/2 order-1 lg:order-2">
+              <div className="relative">
+                <Card className="premium-card overflow-hidden bg-gradient-to-br from-jet-800/70 to-jet-950/90 border border-gold-500/20 backdrop-blur-md scale-animation">
+                  <CardContent className="p-8">
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500/20 to-jet-800/40 flex items-center justify-center border border-gold-500/30">
+                            <MessageSquare className="w-5 h-5 text-gold-500" />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold">Multi-Agent Chat</h3>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Multi-Agent Collaboration</h3>
-                    </div>
-                  </div>
-                  <div className="px-3 py-1 rounded-full bg-bolt-blue/10 text-xs border border-bolt-blue/20">
-                    Live Preview
-                  </div>
-                </div>
-                
-                <div className="space-y-4 p-4 bg-bolt-darker/70 rounded-xl border border-white/5 h-[400px] overflow-y-auto">
-                  {chatMessages.map((message, index) => {
-                    const agent = agents.find(a => a.id === message.sender);
-                    const isUser = message.sender === 'user';
-                    
-                    return (
-                      <div 
-                        key={index}
-                        className={`flex items-start space-x-3 ${isUser ? '' : 'animate-fade-in'}`}
-                        style={{ animationDelay: `${index * 0.2}s` }}
-                      >
-                        <div className={`w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center ${
-                          isUser 
-                            ? 'bg-white/10' 
-                            : 'bg-gradient-to-br from-bolt-blue/20 to-bolt-purple/20'
-                        }`}>
-                          <span>{message.icon}</span>
-                        </div>
-                        <div className="bg-white/5 rounded-lg p-3 text-sm backdrop-blur-sm flex-1">
-                          {!isUser && (
-                            <div className="text-xs text-bolt-blue mb-1">{agent?.name}</div>
-                          )}
-                          <p>{message.text}</p>
-                        </div>
+                        <div className="text-xs text-gray-400 bg-jet-800/50 px-2 py-1 rounded-full border border-gold-500/10">Live Demo</div>
                       </div>
-                    );
-                  })}
-                  
-                  {isTyping && (
-                    <AgentTypingIndicator agent={agents[currentAgent]} />
-                  )}
-                </div>
+                      
+                      <div className="space-y-4 min-h-[320px] bg-jet-900/50 p-4 rounded-lg border border-white/5">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-jet-800 to-jet-900 flex items-center justify-center flex-shrink-0 border border-white/20">
+                            <span>👤</span>
+                          </div>
+                          <div className="bg-jet-800/70 rounded-lg p-3 text-sm border border-white/10">
+                            <p>I'm looking for an investment property in Austin with good rental yield potential.</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-jet-800 to-jet-900 flex items-center justify-center flex-shrink-0 border border-gold-500/30">
+                            <span>📊</span>
+                          </div>
+                          <div className="bg-jet-800/70 rounded-lg p-3 text-sm border border-gold-500/10">
+                            <p>Based on my analysis of the Austin market, the East Downtown area has shown a 12% average annual appreciation with median rental yields of 7.2% over the past 3 years.</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-jet-800 to-jet-900 flex items-center justify-center flex-shrink-0 border border-gold-500/30">
+                            <span>📈</span>
+                          </div>
+                          <div className="bg-jet-800/70 rounded-lg p-3 text-sm border border-gold-500/10">
+                            <p>Looking at market trends, Austin's East Downtown is experiencing increased demand from young professionals, with rental listings spending 32% less time on market compared to last year.</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-jet-800 to-jet-900 flex items-center justify-center flex-shrink-0 border border-gold-500/30">
+                            <span>🏠</span>
+                          </div>
+                          <div className="bg-jet-800/70 rounded-lg p-3 text-sm border border-gold-500/10">
+                            <p>I can recommend 3 specific properties in East Downtown that match your investment criteria, with cap rates ranging from 6.8% to 8.2%. Would you like me to provide more details on these options?</p>
+                          </div>
+                        </div>
+                        
+                        {isTyping && (
+                          <AgentTypingIndicator agent={agents[currentAgent]} />
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
                 
-                <div className="flex mt-6">
-                  <div className="w-full relative">
-                    <input 
-                      type="text" 
-                      placeholder="Ask the AI agents..." 
-                      className="w-full bg-bolt-darker/70 border border-white/10 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-bolt-blue/50"
-                      disabled
-                    />
-                    <Button className="absolute right-1 top-1 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple hover:opacity-90 transition-opacity" disabled>
-                      <ArrowRight className="w-5 h-5" />
-                    </Button>
+                {/* Decorative elements */}
+                <div className="absolute -top-12 -left-12 w-24 h-24 agent-orbit">
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-gold-500/5 to-transparent border border-gold-500/10 flex items-center justify-center animate-pulse-soft">
+                    <Brain className="w-8 h-8 text-gold-500/70" />
                   </div>
                 </div>
-              </div>
-              
-              <div className="mt-8 text-center p-5 bg-bolt-blue/5 backdrop-blur-sm rounded-xl border border-bolt-blue/10">
-                <h3 className="text-2xl font-clash font-semibold mb-4">
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-bolt-blue to-bolt-purple">
-                    Experience the full power of collaborative AI
-                  </span>
-                </h3>
-                <p className="text-gray-300 mb-6">
-                  Tap into the collective intelligence of specialized AI agents working together to solve your real estate challenges
-                </p>
-                <Button 
-                  onClick={() => navigate('/multi-agent-chat')} 
-                  className="bg-gradient-to-r from-bolt-blue to-bolt-purple hover:opacity-90 transition-opacity group"
-                >
-                  Launch Multi-Agent Experience
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                
+                <div className="absolute -bottom-8 -right-8 w-20 h-20 agent-orbit">
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-gold-500/5 to-transparent border border-gold-500/10 flex items-center justify-center animate-pulse-soft" style={{animationDelay: '1s'}}>
+                    <Cpu className="w-6 h-6 text-gold-500/70" />
+                  </div>
+                </div>
+                
+                <div className="absolute top-1/3 -right-10 w-16 h-16 agent-orbit">
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-gold-500/5 to-transparent border border-gold-500/10 flex items-center justify-center animate-pulse-soft" style={{animationDelay: '0.5s'}}>
+                    <Zap className="w-5 h-5 text-gold-500/70" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Animated gradient blobs */}
+      <div className="absolute top-1/3 right-0 w-96 h-96 rounded-full bg-gold-500/5 blur-[150px] animate-pulse-soft"></div>
+      <div className="absolute bottom-1/3 left-0 w-80 h-80 rounded-full bg-gold-500/5 blur-[120px] animate-pulse-soft"></div>
     </section>
   );
 };
