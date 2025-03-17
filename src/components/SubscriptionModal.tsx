@@ -133,7 +133,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
   // Check if user already has this plan
   const userHasThisPlan = (plan: Plan) => {
     if (!hasActiveSubscription || !user?.subscription) return false;
-    return user.subscription.planId === plan.id;
+    return user.subscription.plan === plan.id;
   };
   
   return (
