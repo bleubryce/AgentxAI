@@ -122,6 +122,14 @@
     @apply bg-clip-text text-transparent bg-gold-gradient animate-text-shimmer bg-[length:200%_auto];
   }
   
+  .text-shadow-enhance {
+    text-shadow: 0 0 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
+  }
+  
+  .text-outline {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }
+  
   .button-glow {
     @apply relative overflow-hidden transition-all duration-300;
   }
@@ -172,6 +180,10 @@
   
   .gold-highlight {
     @apply text-gold-500 font-medium;
+  }
+
+  .content-overlay {
+    @apply relative z-10 bg-gradient-to-r from-jet-950/90 to-jet-950/70 p-8 rounded-2xl backdrop-blur-sm;
   }
 }
 
