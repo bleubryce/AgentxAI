@@ -1,13 +1,17 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MenuIcon, X, Zap } from 'lucide-react';
+import { MenuIcon, X, Zap, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import AuthModal from './AuthModal';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,13 +103,31 @@ const Navbar = () => {
             Contact
           </Link>
           <div className="w-px h-6 bg-white/10"></div>
-          <Link
-            to="/contact"
-            className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
-          >
-            <Zap className="w-4 h-4 mr-2" />
-            Contact Us
-          </Link>
+          {isAuthenticated ? (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/dashboard"
+                className="nav-link flex items-center"
+              >
+                <User className="w-4 h-4 mr-2" />
+                {user?.name?.split(' ')[0] || 'Dashboard'}
+              </Link>
+              <button
+                onClick={logout}
+                className="text-white/80 hover:text-white"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
+            >
+              <Zap className="w-4 h-4 mr-2" />
+              Sign In
+            </button>
+          )}
         </nav>
 
         <button
@@ -193,15 +215,42 @@ const Navbar = () => {
             Contact
           </Link>
           <div className="w-32 h-px bg-white/10 my-4"></div>
-          <Link
-            to="/contact"
-            className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
-          >
-            <Zap className="w-4 h-4 mr-2" />
-            Contact Us
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+              >
+                <User className="w-4 h-4 mr-2" />
+                Dashboard
+              </Link>
+              <button
+                onClick={logout}
+                className="text-white/80 hover:text-white text-xl font-medium"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                setIsAuthModalOpen(true);
+                setIsMobileMenuOpen(false);
+              }}
+              className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+            >
+              <Zap className="w-4 h-4 mr-2" />
+              Sign In
+            </button>
+          )}
         </nav>
       </div>
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </header>
   );
 };

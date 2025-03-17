@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { AuthService } from '@/services/auth';
 import { X, Mail, Lock, User as UserIcon, ArrowRight, Apple } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ type AuthMode = 'login' | 'register';
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [mode, setMode] = useState<AuthMode>('login');
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, login, register, loginWithGoogle, loginWithApple } = useAuth();
   
   // Form state
   const [name, setName] = useState('');
@@ -36,13 +36,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
     try {
       let success = false;
       
       if (mode === 'login') {
-        success = await AuthService.login({ email, password });
+        success = await login(email, password);
       } else {
         if (!name) {
           toast({
@@ -52,48 +51,17 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           });
           return;
         }
-        success = await AuthService.register({ name, email, password });
+        success = await register(name, email, password);
       }
       
       if (success) {
         onClose();
-        window.location.reload(); // Refresh to update auth state
       }
     } catch (error) {
       console.error('Auth error:', error);
       toast({
         title: "Authentication Error",
         description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  const handleGoogleLogin = async () => {
-    try {
-      await AuthService.loginWithGoogle();
-      // The callback will handle the result
-    } catch (error) {
-      console.error('Google login error:', error);
-      toast({
-        title: "Google Login Error",
-        description: "Failed to login with Google. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleAppleLogin = async () => {
-    try {
-      await AuthService.loginWithApple();
-      // The callback will handle the result
-    } catch (error) {
-      console.error('Apple login error:', error);
-      toast({
-        title: "Apple Login Error",
-        description: "Failed to login with Apple. Please try again.",
         variant: "destructive"
       });
     }
@@ -202,7 +170,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           <div className="space-y-3">
             <Button
               type="button"
-              onClick={handleGoogleLogin}
+              onClick={loginWithGoogle}
               className="w-full bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full border border-gray-300"
             >
               <svg className="inline-block w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -216,7 +184,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             
             <Button
               type="button"
-              onClick={handleAppleLogin}
+              onClick={loginWithApple}
               className="w-full bg-black hover:bg-gray-900 text-white font-medium py-2 px-4 rounded-full border border-gray-800"
             >
               <Apple className="mr-2 h-5 w-5" />

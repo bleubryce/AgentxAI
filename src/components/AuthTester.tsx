@@ -1,14 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Label } from './ui/label';
-import { AuthService, User } from '@/services/auth';
+import { User } from '@/services/auth';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 const AuthTester = () => {
+  // Get auth state and methods from our hook
+  const { user, isLoading, isAuthenticated, hasFeatureAccess, login, register, loginWithGoogle, loginWithApple, logout } = useAuth();
+  
   // State for form inputs
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -16,36 +20,12 @@ const AuthTester = () => {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   
-  // State for loading and current user
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  
-  // Get current user on mount
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    setCurrentUser(user);
-    
-    // Listen for auth state changes
-    const handleAuthChange = () => {
-      setCurrentUser(AuthService.getCurrentUser());
-    };
-    
-    window.addEventListener('auth_state_change', handleAuthChange);
-    return () => {
-      window.removeEventListener('auth_state_change', handleAuthChange);
-    };
-  }, []);
-  
   // Handle login
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
     try {
-      const success = await AuthService.login({
-        email: loginEmail,
-        password: loginPassword
-      });
+      const success = await login(loginEmail, loginPassword);
       
       if (!success) {
         toast({
@@ -61,22 +41,15 @@ const AuthTester = () => {
         description: "An unexpected error occurred",
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
     }
   };
   
   // Handle registration
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
     try {
-      const success = await AuthService.register({
-        name: registerName,
-        email: registerEmail,
-        password: registerPassword
-      });
+      const success = await register(registerName, registerEmail, registerPassword);
       
       if (!success) {
         toast({
@@ -92,20 +65,12 @@ const AuthTester = () => {
         description: "An unexpected error occurred",
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
     }
-  };
-  
-  // Handle logout
-  const handleLogout = () => {
-    AuthService.logout();
-    setCurrentUser(null);
   };
   
   // Verify feature access
   const checkFeatureAccess = (featureName: string) => {
-    const hasAccess = AuthService.hasFeatureAccess(featureName);
+    const hasAccess = hasFeatureAccess(featureName);
     toast({
       title: `Feature: ${featureName}`,
       description: hasAccess ? "You have access to this feature" : "You don't have access to this feature",
@@ -122,27 +87,27 @@ const AuthTester = () => {
         <CardHeader>
           <CardTitle>Current User Status</CardTitle>
           <CardDescription>
-            {currentUser ? "You are logged in" : "You are not logged in"}
+            {isAuthenticated ? "You are logged in" : "You are not logged in"}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {currentUser ? (
+          {user ? (
             <div className="space-y-2">
-              <p><strong>Name:</strong> {currentUser.name}</p>
-              <p><strong>Email:</strong> {currentUser.email}</p>
-              <p><strong>Role:</strong> {currentUser.role}</p>
-              <p><strong>User ID:</strong> {currentUser.id}</p>
+              <p><strong>Name:</strong> {user.name}</p>
+              <p><strong>Email:</strong> {user.email}</p>
+              <p><strong>Role:</strong> {user.role}</p>
+              <p><strong>User ID:</strong> {user.id}</p>
               
-              {currentUser.subscription && (
+              {user.subscription && (
                 <div className="mt-4 p-4 bg-gray-100 rounded-md dark:bg-gray-800">
                   <h3 className="text-lg font-semibold mb-2">Subscription</h3>
-                  <p><strong>Plan:</strong> {currentUser.subscription.plan}</p>
-                  <p><strong>Status:</strong> {currentUser.subscription.status}</p>
-                  <p><strong>Expires:</strong> {new Date(currentUser.subscription.expiresAt).toLocaleDateString()}</p>
+                  <p><strong>Plan:</strong> {user.subscription.plan}</p>
+                  <p><strong>Status:</strong> {user.subscription.status}</p>
+                  <p><strong>Expires:</strong> {new Date(user.subscription.expiresAt).toLocaleDateString()}</p>
                   <div className="mt-2">
                     <p><strong>Features:</strong></p>
                     <ul className="list-disc list-inside">
-                      {currentUser.subscription.features.map((feature, index) => (
+                      {user.subscription.features.map((feature, index) => (
                         <li key={index}>{feature}</li>
                       ))}
                     </ul>
@@ -155,7 +120,7 @@ const AuthTester = () => {
           )}
         </CardContent>
         <CardFooter className="flex justify-between">
-          {currentUser ? (
+          {user ? (
             <>
               <Button 
                 variant="outline" 
@@ -165,7 +130,7 @@ const AuthTester = () => {
               </Button>
               <Button 
                 variant="destructive" 
-                onClick={handleLogout}
+                onClick={logout}
               >
                 Logout
               </Button>
@@ -177,7 +142,7 @@ const AuthTester = () => {
       </Card>
       
       {/* Auth forms */}
-      {!currentUser && (
+      {!isAuthenticated && (
         <Tabs defaultValue="login" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
@@ -229,14 +194,14 @@ const AuthTester = () => {
                 <div className="w-full flex justify-between">
                   <Button 
                     variant="outline" 
-                    onClick={() => AuthService.loginWithGoogle()}
+                    onClick={loginWithGoogle}
                     disabled={isLoading}
                   >
                     Google Login
                   </Button>
                   <Button 
                     variant="outline" 
-                    onClick={() => AuthService.loginWithApple()}
+                    onClick={loginWithApple}
                     disabled={isLoading}
                   >
                     Apple Login

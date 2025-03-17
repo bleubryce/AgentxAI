@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +16,8 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
 import TestAuth from "./pages/TestAuth";
-import { AuthService, createAuthListener } from "./services/auth";
+import { createAuthListener } from "./services/auth";
+import { AuthProvider, useAuth } from "./hooks/useAuth";
 
 // Create a new query client with optimized settings
 const queryClient = new QueryClient({
@@ -33,26 +35,10 @@ createAuthListener();
 
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    // Check authentication state
-    setIsAuthenticated(AuthService.isAuthenticated());
-    
-    // Listen for auth state changes
-    const handleAuthChange = () => {
-      setIsAuthenticated(AuthService.isAuthenticated());
-    };
-    
-    window.addEventListener('auth_state_change', handleAuthChange);
-    
-    return () => {
-      window.removeEventListener('auth_state_change', handleAuthChange);
-    };
-  }, []);
+  const { isAuthenticated, isLoading } = useAuth();
 
   // Show loading state while checking auth
-  if (isAuthenticated === null) {
+  if (isLoading) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
 
@@ -67,43 +53,45 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Public routes - no authentication required */}
-          <Route path="/" element={<Index />} />
-          <Route path="/features" element={<FeaturesPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/careers" element={<CareersPage />} />
-          <Route path="/test-auth" element={<TestAuth />} />
-          
-          {/* Protected routes - only for authenticated clients */}
-          <Route 
-            path="/dashboard/*" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          
-          <Route 
-            path="/agents/*" 
-            element={
-              <ProtectedRoute>
-                <Agents />
-              </ProtectedRoute>
-            } 
-          />
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public routes - no authentication required */}
+            <Route path="/" element={<Index />} />
+            <Route path="/features" element={<FeaturesPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/test-auth" element={<TestAuth />} />
+            
+            {/* Protected routes - only for authenticated clients */}
+            <Route 
+              path="/dashboard/*" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            <Route 
+              path="/agents/*" 
+              element={
+                <ProtectedRoute>
+                  <Agents />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
