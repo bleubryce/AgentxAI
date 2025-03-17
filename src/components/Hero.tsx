@@ -10,13 +10,9 @@ import HeroContent from './hero/HeroContent';
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   
-  const handleHeroRefSet = (ref: React.RefObject<HTMLDivElement>) => {
-    heroRef.current = ref.current;
-  };
-  
   return (
-    <div className="relative z-10">
-      <HeroBackground onHeroRefSet={handleHeroRefSet}>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      <HeroBackground>
         <HeroContent />
       </HeroBackground>
     </div>

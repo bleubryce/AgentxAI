@@ -4,17 +4,12 @@ import { motion } from 'framer-motion';
 
 interface HeroBackgroundProps {
   children: React.ReactNode;
-  onHeroRefSet: (ref: React.RefObject<HTMLDivElement>) => void;
 }
 
-const HeroBackground = ({ children, onHeroRefSet }: HeroBackgroundProps) => {
+const HeroBackground = ({ children }: HeroBackgroundProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
   
   useEffect(() => {
-    // Share heroRef with parent component
-    onHeroRefSet(heroRef);
-    
     const heroElement = heroRef.current;
     if (!heroElement) return;
     
@@ -28,10 +23,6 @@ const HeroBackground = ({ children, onHeroRefSet }: HeroBackgroundProps) => {
       
       // Apply parallax effect to background
       heroElement.style.backgroundPosition = `calc(50% + ${moveX}px) calc(50% + ${moveY}px)`;
-      
-      if (textRef.current) {
-        textRef.current.style.transform = `translate(${moveX / 3}px, ${moveY / 3}px)`;
-      }
     };
     
     heroElement.addEventListener('mousemove', handleMouseMove);
@@ -39,7 +30,7 @@ const HeroBackground = ({ children, onHeroRefSet }: HeroBackgroundProps) => {
     return () => {
       heroElement.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [onHeroRefSet]);
+  }, []);
   
   return (
     <div 
