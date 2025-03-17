@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Bot, BarChart3, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -41,14 +40,14 @@ const Hero = () => {
       ref={heroRef}
       className="relative min-h-screen flex items-center pt-20 overflow-hidden"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2664&q=80')",
+        backgroundImage: "url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2664&q=80')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
       {/* Stronger overlay gradient for better contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-jet-950/90 via-jet-950/80 to-jet-950/70"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-jet-950/95 via-jet-950/85 to-jet-950/75"></div>
       
       {/* Animated glowing orbs */}
       <div className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-gold-500/10 blur-[120px] animate-pulse-soft"></div>
