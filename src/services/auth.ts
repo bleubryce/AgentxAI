@@ -36,7 +36,7 @@ const createMockUser = (name: string, email: string): User => ({
   email,
   role: 'user',
   subscription: {
-    plan: 'trial',
+    plan: 'free', // Changed from 'trial' to 'free' to match the expected types
     status: 'trial',
     expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
     features: ['basic_features', 'ai_chat']
