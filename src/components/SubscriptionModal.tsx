@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { X, Check, Zap } from 'lucide-react';
 import apiRequest from '@/services/api';
 import { AuthService } from '@/services/auth';
+import { useAuth } from '@/hooks/useAuth';
 
 interface SubscriptionModalProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ interface Plan {
 const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, requiredFeature }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user, hasActiveSubscription } = useAuth();
   
   const plans: Plan[] = [
     {
@@ -127,6 +129,12 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
       setIsLoading(false);
     }
   };
+
+  // Check if user already has this plan
+  const userHasThisPlan = (plan: Plan) => {
+    if (!hasActiveSubscription || !user?.subscription) return false;
+    return user.subscription.planId === plan.id;
+  };
   
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -192,9 +200,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
               
               <Button
                 onClick={() => handleSelectPlan(plan.id)}
-                disabled={isLoading}
+                disabled={isLoading || userHasThisPlan(plan)}
                 className={`w-full ${
-                  plan.recommended
+                  userHasThisPlan(plan) 
+                    ? "bg-green-700 cursor-not-allowed" 
+                    : plan.recommended
                     ? "button-glow bg-gradient-to-r from-bolt-blue to-bolt-purple"
                     : "bg-bolt-darkblue hover:bg-bolt-blue/30"
                 } rounded-full text-white font-medium transition-all duration-300`}
@@ -206,6 +216,11 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                     Processing
+                  </span>
+                ) : userHasThisPlan(plan) ? (
+                  <span className="flex items-center justify-center">
+                    Current Plan
+                    <Check className="ml-2 h-5 w-5" />
                   </span>
                 ) : (
                   <span className="flex items-center justify-center">

@@ -8,14 +8,23 @@ import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
 import { MultiAgentChatPromo } from "@/components/MultiAgentChatPromo";
 import Navbar from "@/components/Navbar";
+import SubscriptionModal from "@/components/SubscriptionModal";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [revealedSections, setRevealedSections] = useState<string[]>([]);
   const [scrollY, setScrollY] = useState(0);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Check if user came from a #subscribe link
+    if (window.location.hash === '#subscribe' || window.location.hash === '#signup') {
+      setShowSubscriptionModal(true);
+    }
     
     // Track scroll position
     const handleScroll = () => {
@@ -37,9 +46,19 @@ const Index = () => {
     
     window.addEventListener('scroll', handleScroll);
     
+    // Handle hash changes
+    const handleHashChange = () => {
+      if (window.location.hash === '#subscribe' || window.location.hash === '#signup') {
+        setShowSubscriptionModal(true);
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    
     return () => {
       observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
 
@@ -171,6 +190,12 @@ const Index = () => {
         </motion.div>
         
         <Footer />
+        
+        {/* Subscription Modal */}
+        <SubscriptionModal 
+          isOpen={showSubscriptionModal} 
+          onClose={() => setShowSubscriptionModal(false)} 
+        />
       </main>
     </>
   );

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -70,9 +71,14 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+// Protected route component with subscription check
+const ProtectedRoute = ({ children, requiresSubscription = false, requiredFeature = "" }: { 
+  children: React.ReactNode, 
+  requiresSubscription?: boolean,
+  requiredFeature?: string
+}) => {
+  const { isAuthenticated, isLoading, hasActiveSubscription, hasFeatureAccess } = useAuth();
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   // Show loading state while checking auth
   if (isLoading) {
@@ -101,6 +107,16 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/" replace />;
   }
 
+  // Check if subscription is required but user doesn't have one
+  if (requiresSubscription && !hasActiveSubscription) {
+    return <Navigate to="/pricing" replace />;
+  }
+
+  // Check if specific feature access is required
+  if (requiredFeature && !hasFeatureAccess(requiredFeature)) {
+    return <Navigate to="/pricing" replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -121,10 +137,27 @@ const AnimatedRoutes = () => {
         <Route path="/careers" element={<PageTransition><CareersPage /></PageTransition>} />
         <Route path="/test-auth" element={<PageTransition><TestAuth /></PageTransition>} />
         <Route path="/agents-demos" element={<PageTransition><AgentsDemos /></PageTransition>} />
-        <Route path="/agent-deployment" element={<PageTransition><AgentDeployment /></PageTransition>} />
-        <Route path="/multi-agent-chat" element={<PageTransition><MultiAgentChat /></PageTransition>} />
         
-        {/* Protected routes - only for authenticated clients */}
+        {/* Semi-protected routes - require authentication but not subscription */}
+        <Route 
+          path="/agent-deployment" 
+          element={
+            <ProtectedRoute>
+              <PageTransition><AgentDeployment /></PageTransition>
+            </ProtectedRoute>
+          } 
+        />
+        
+        {/* Protected routes - require authentication and subscription */}
+        <Route 
+          path="/multi-agent-chat" 
+          element={
+            <ProtectedRoute requiresSubscription={true}>
+              <PageTransition><MultiAgentChat /></PageTransition>
+            </ProtectedRoute>
+          } 
+        />
+        
         <Route 
           path="/dashboard/*" 
           element={

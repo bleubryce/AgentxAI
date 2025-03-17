@@ -1,6 +1,7 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { AuthService, User } from '@/services/auth';
+import { useToast } from '@/hooks/use-toast';
 
 // Create context for auth state
 interface AuthContextType {
@@ -9,6 +10,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   hasActiveSubscription: boolean;
   hasFeatureAccess: (feature: string) => boolean;
+  refreshUserData: () => Promise<void>;
   login: (email: string, password: string) => Promise<boolean>;
   loginWithGoogle: () => Promise<void>;
   loginWithApple: () => Promise<void>;
@@ -22,6 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   // Initialize auth state on mount
   useEffect(() => {
@@ -49,6 +52,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       window.removeEventListener('auth_state_change', handleAuthChange);
     };
   }, []);
+
+  // Force refresh of user data (useful after subscription changes)
+  const refreshUserData = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await AuthService.refreshToken();
+      setUser(AuthService.getCurrentUser());
+    } catch (error) {
+      console.error("Error refreshing user data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to refresh user data",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Wrap AuthService methods with error handling
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -125,6 +146,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticated: !!user,
     hasActiveSubscription: user ? AuthService.hasActiveSubscription() : false,
     hasFeatureAccess,
+    refreshUserData,
     login,
     loginWithGoogle,
     loginWithApple,
