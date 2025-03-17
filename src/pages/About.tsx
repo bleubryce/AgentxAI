@@ -3,8 +3,15 @@ import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ChevronRight, Users, Award, Heart, Briefcase, MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 const AboutPage = () => {
+  const { toast } = useToast();
+  
   useEffect(() => {
     document.title = "About Us | AgentX AI - Real Estate Automation";
   }, []);
@@ -27,7 +34,24 @@ const AboutPage = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-bolt-darker to-bolt-dark text-white">
       <Navbar />
       <main className="flex-grow pt-28">
-        <div className="container mx-auto px-4 py-16">
+        {/* Breadcrumb */}
+        <div className="container mx-auto px-4">
+          <Breadcrumb className="mb-8">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink as={Link} to="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator>
+                <ChevronRight className="h-4 w-4" />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbLink>About</BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+
+        <div className="container mx-auto px-4 py-8">
           <motion.div 
             className="text-center mb-16"
             initial="initial"
@@ -59,6 +83,21 @@ const AboutPage = () => {
               <p className="text-white/80 text-lg">
                 Today, AgentX AI serves thousands of real estate professionals nationwide, helping them automate their workflows and achieve unprecedented results in their business.
               </p>
+              
+              <div className="mt-8">
+                <Button 
+                  className="bg-gradient-to-r from-bolt-blue to-bolt-purple hover:shadow-glow-blue transition-all duration-300"
+                  size="lg"
+                  onClick={() => {
+                    toast({
+                      title: "Learn more",
+                      description: "More content about our story is coming soon!"
+                    });
+                  }}
+                >
+                  Learn More About Our Journey
+                </Button>
+              </div>
             </motion.div>
             <motion.div 
               className="rounded-2xl overflow-hidden shadow-xl border border-white/10 bg-gradient-to-br from-bolt-dark/60 to-bolt-darker/60 backdrop-blur-sm hover:shadow-glow-blue/30 transition-all duration-500"
@@ -71,9 +110,7 @@ const AboutPage = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <svg className="w-10 h-10 text-bolt-dark" fill="currentColor" viewBox="0 0 256 256">
-                      <path d="M212.92,75.5l-52,32A8,8,0,0,1,152,100V36a8,8,0,0,0-13.7-5.64l-112,112A8,8,0,0,0,32,156h76v64a8,8,0,0,0,13.7,5.64l112-112A8,8,0,0,0,232,100H156S213.72,75,212.92,75.5Z" />
-                    </svg>
+                    <Award className="w-10 h-10 text-bolt-dark" />
                   </motion.div>
                   <h3 className="text-2xl font-bold mb-2 font-clash">Our Vision</h3>
                   <p className="text-white/70">
@@ -100,21 +137,25 @@ const AboutPage = () => {
                   name: "Alex Morgan",
                   title: "Founder & CEO",
                   bio: "Former tech executive with 15+ years in AI and machine learning.",
+                  icon: <Users className="h-8 w-8" />
                 },
                 {
                   name: "Sarah Chen",
                   title: "Chief Technology Officer",
                   bio: "AI researcher and architect behind our automation platform.",
+                  icon: <Award className="h-8 w-8" />
                 },
                 {
                   name: "Marcus Williams",
                   title: "Real Estate Advisor",
                   bio: "20+ years as a top-producing broker and industry consultant.",
+                  icon: <Briefcase className="h-8 w-8" />
                 },
                 {
                   name: "Jessica Rodriguez",
                   title: "Head of Product",
                   bio: "Expert in creating intuitive, high-impact software solutions.",
+                  icon: <MessageSquare className="h-8 w-8" />
                 },
               ].map((member, index) => (
                 <motion.div 
@@ -128,11 +169,11 @@ const AboutPage = () => {
                 >
                   <div className="h-48 bg-gradient-to-br from-bolt-blue/20 to-bolt-purple/20 flex items-center justify-center">
                     <motion.div 
-                      className="w-24 h-24 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple flex items-center justify-center text-3xl font-bold text-white"
+                      className="w-24 h-24 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple flex items-center justify-center text-white"
                       whileHover={{ scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
-                      {member.name.split(' ').map(n => n[0]).join('')}
+                      {member.icon}
                     </motion.div>
                   </div>
                   <div className="p-6">
@@ -145,6 +186,7 @@ const AboutPage = () => {
             </motion.div>
           </motion.div>
 
+          {/* Values section with improved styling */}
           <motion.div 
             className="rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-bolt-dark/60 to-bolt-darker/60 backdrop-blur-sm mb-20 hover:shadow-glow-blue/10 transition-all duration-500"
             variants={fadeIn}
@@ -200,6 +242,7 @@ const AboutPage = () => {
             </div>
           </motion.div>
 
+          {/* CTA section */}
           <motion.div 
             className="text-center mb-20"
             variants={fadeIn}
@@ -223,14 +266,12 @@ const AboutPage = () => {
               <p className="text-lg text-white/70 mb-8">
                 AgentX AI is trusted by top brokerages and real estate professionals nationwide. Our platform has been recognized for its innovation and impact in the real estate industry.
               </p>
-              <motion.a 
-                href="/contact" 
-                className="button-glow inline-block px-8 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+              <Link 
+                to="/contact"
+                className="inline-block button-glow px-8 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
               >
                 Get in Touch
-              </motion.a>
+              </Link>
             </div>
           </motion.div>
         </div>
