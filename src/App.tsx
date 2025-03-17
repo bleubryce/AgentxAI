@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
 import AgentsDemos from "./pages/AgentsDemos";
+import AgentDeployment from "./pages/AgentDeployment";
 import TestAuth from "./pages/TestAuth";
 import { createAuthListener } from "./services/auth";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
@@ -119,6 +120,7 @@ const AnimatedRoutes = () => {
         <Route path="/careers" element={<PageTransition><CareersPage /></PageTransition>} />
         <Route path="/test-auth" element={<PageTransition><TestAuth /></PageTransition>} />
         <Route path="/agents-demos" element={<PageTransition><AgentsDemos /></PageTransition>} />
+        <Route path="/agent-deployment" element={<PageTransition><AgentDeployment /></PageTransition>} />
         
         {/* Protected routes - only for authenticated clients */}
         <Route 
