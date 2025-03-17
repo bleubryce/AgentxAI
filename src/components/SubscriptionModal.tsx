@@ -26,6 +26,7 @@ interface Plan {
   features: PlanFeature[];
   agentAccess: string[];
   recommended?: boolean;
+  hasTrial?: boolean;
 }
 
 const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, requiredFeature }) => {
@@ -46,7 +47,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
         { name: 'Content Creation Agent', included: false },
         { name: 'Premium Support', included: false },
       ],
-      agentAccess: ['lead-generation', 'property-matching', 'client-communication']
+      agentAccess: ['lead-generation', 'property-matching', 'client-communication'],
+      hasTrial: true
     },
     {
       id: 'premium',
@@ -62,7 +64,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
         { name: 'Premium Support', included: false },
       ],
       agentAccess: ['lead-generation', 'property-matching', 'client-communication', 'document-management', 'content-creation'],
-      recommended: true
+      recommended: true,
+      hasTrial: false
     },
     {
       id: 'enterprise',
@@ -77,7 +80,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
         { name: 'Content Creation Agent', included: true },
         { name: 'Premium Support', included: true },
       ],
-      agentAccess: ['lead-generation', 'property-matching', 'client-communication', 'document-management', 'content-creation']
+      agentAccess: ['lead-generation', 'property-matching', 'client-communication', 'document-management', 'content-creation'],
+      hasTrial: false
     }
   ];
   
@@ -205,11 +209,17 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isOpen, onClose, 
                   </span>
                 ) : (
                   <span className="flex items-center justify-center">
-                    Select Plan
+                    {plan.hasTrial ? "Start 7-Day Trial" : "Select Plan"}
                     <Zap className="ml-2 h-5 w-5" />
                   </span>
                 )}
               </Button>
+              
+              {plan.hasTrial && (
+                <p className="text-center text-sm text-gray-400 mt-4">
+                  Credit card required. 7-day limited feature trial.
+                </p>
+              )}
             </div>
           ))}
         </div>

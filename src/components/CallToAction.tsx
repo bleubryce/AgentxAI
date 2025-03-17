@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Bot, Building, Calendar, CheckCircle, XCircle, Send, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -245,7 +244,7 @@ const CallToAction = () => {
               </h2>
               
               <p className="text-lg text-gray-300 max-w-xl">
-                Start your 7-day trial today and experience the power of AI-driven real estate automation. Credit card required.
+                Start your 7-day trial with our Basic plan today and experience the power of AI-driven real estate automation.
               </p>
               
               <div className="space-y-4">
@@ -272,7 +271,7 @@ const CallToAction = () => {
                   href="#signup" 
                   className="button-glow inline-flex items-center justify-center px-8 py-4 bg-blue-purple-gradient rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
                 >
-                  <span>Start 7-Day Trial</span>
+                  <span>Start 7-Day Basic Trial</span>
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </a>
               </div>
