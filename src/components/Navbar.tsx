@@ -1,9 +1,20 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MenuIcon, X, Zap, User } from 'lucide-react';
+import { MenuIcon, X, Zap, User, ChevronDown, Building2, Users, BookOpen, Mail, HelpCircle, BarChart3, Bot, Briefcase, Phone, Heart, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import AuthModal from './AuthModal';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,6 +44,19 @@ const Navbar = () => {
     return location.pathname === path;
   };
 
+  const NavLink = ({ to, children, className }: { to: string, children: React.ReactNode, className?: string }) => (
+    <Link
+      to={to}
+      className={cn(
+        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+        isActive(to) ? "bg-white/10 text-white" : "text-white/70",
+        className
+      )}
+    >
+      {children}
+    </Link>
+  );
+
   return (
     <header
       className={cn(
@@ -48,89 +72,189 @@ const Navbar = () => {
           className="flex items-center space-x-2 group z-50"
           aria-label="AgentX AI Home"
         >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple flex items-center justify-center overflow-hidden group-hover:shadow-glow-blue transition-shadow duration-300">
+          <motion.div 
+            whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+            transition={{ duration: 0.5 }}
+            className="w-10 h-10 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple flex items-center justify-center overflow-hidden group-hover:shadow-glow-blue transition-shadow duration-300"
+          >
             <svg className="w-6 h-6 text-bolt-dark" fill="currentColor" viewBox="0 0 256 256">
               <path d="M212.92,75.5l-52,32A8,8,0,0,1,152,100V36a8,8,0,0,0-13.7-5.64l-112,112A8,8,0,0,0,32,156h76v64a8,8,0,0,0,13.7,5.64l112-112A8,8,0,0,0,232,100H156S213.72,75,212.92,75.5Z" />
             </svg>
-          </div>
+          </motion.div>
           <span className="text-xl font-clash font-semibold">
             AGENT<span className="text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text">X AI</span>
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link
-            to="/"
-            className={cn("nav-link", isActive('/') && "active")}
-          >
-            Home
-          </Link>
-          <Link
-            to="/features"
-            className={cn("nav-link", isActive('/features') && "active")}
-          >
-            Features
-          </Link>
-          <Link
-            to="/pricing"
-            className={cn("nav-link", isActive('/pricing') && "active")}
-          >
-            Pricing
-          </Link>
-          <Link
-            to="/about"
-            className={cn("nav-link", isActive('/about') && "active")}
-          >
-            About
-          </Link>
-          <Link
-            to="/blog"
-            className={cn("nav-link", isActive('/blog') && "active")}
-          >
-            Blog
-          </Link>
-          <Link
-            to="/careers"
-            className={cn("nav-link", isActive('/careers') && "active")}
-          >
-            Careers
-          </Link>
-          <Link
-            to="/contact"
-            className={cn("nav-link", isActive('/contact') && "active")}
-          >
-            Contact
-          </Link>
-          <div className="w-px h-6 bg-white/10"></div>
+        <nav className="hidden lg:block">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavLink to="/">
+                  <Home className="mr-2 h-4 w-4" />
+                  Home
+                </NavLink>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className={cn(
+                  "bg-transparent hover:bg-white/10 hover:text-white", 
+                  isActive('/features') ? "text-white" : "text-white/70"
+                )}>
+                  <Bot className="mr-2 h-4 w-4" />
+                  AI Agents
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2 bg-bolt-darker/90 backdrop-blur-md border border-white/10 rounded-xl shadow-xl"
+                  >
+                    <Link to="/features" className="row-span-3 rounded-md bg-gradient-to-b from-bolt-darkblue/30 to-transparent p-6 hover:bg-white/5 transition-colors">
+                      <div className="mb-2 mt-4 text-lg font-medium text-white">AI Agent Features</div>
+                      <p className="text-sm leading-tight text-gray-400">
+                        Explore our full suite of AI agents designed to revolutionize your real estate business.
+                      </p>
+                      <div className="mt-4 flex items-center text-sm text-bolt-blue">
+                        Learn more <ChevronDown className="h-4 w-4 ml-1 rotate-[-90deg]" />
+                      </div>
+                    </Link>
+                    
+                    <Link to="/agents-demos" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                      <div className="mb-2 flex items-center">
+                        <BarChart3 className="h-5 w-5 text-bolt-blue mr-2" />
+                        <div className="text-sm font-medium text-white">Lead Generation</div>
+                      </div>
+                      <p className="text-xs text-gray-400">AI-driven lead qualification and nurturing</p>
+                    </Link>
+                    
+                    <Link to="/agents-demos" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                      <div className="mb-2 flex items-center">
+                        <Home className="h-5 w-5 text-bolt-blue mr-2" />
+                        <div className="text-sm font-medium text-white">Property Matching</div>
+                      </div>
+                      <p className="text-xs text-gray-400">Smart property recommendations for clients</p>
+                    </Link>
+                    
+                    <Link to="/multi-agent-chat" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                      <div className="mb-2 flex items-center">
+                        <Users className="h-5 w-5 text-bolt-blue mr-2" />
+                        <div className="text-sm font-medium text-white">Multi-Agent Chat</div>
+                      </div>
+                      <p className="text-xs text-gray-400">Experience our collaborative AI agents in action</p>
+                    </Link>
+                    
+                    <Link to="/agent-deployment" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                      <div className="mb-2 flex items-center">
+                        <Zap className="h-5 w-5 text-bolt-blue mr-2" />
+                        <div className="text-sm font-medium text-white">Deploy Your Own</div>
+                      </div>
+                      <p className="text-xs text-gray-400">Create and deploy custom AI agents for your needs</p>
+                    </Link>
+                  </motion.div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <NavLink to="/pricing">
+                  <BarChart3 className="mr-2 h-4 w-4" />
+                  Pricing
+                </NavLink>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className={cn(
+                  "bg-transparent hover:bg-white/10 hover:text-white", 
+                  (isActive('/about') || isActive('/careers') || isActive('/blog')) ? "text-white" : "text-white/70"
+                )}>
+                  <Building2 className="mr-2 h-4 w-4" />
+                  Company
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="grid gap-3 p-6 md:w-[400px] bg-bolt-darker/90 backdrop-blur-md border border-white/10 rounded-xl shadow-xl"
+                  >
+                    <div className="grid grid-cols-1 gap-3">
+                      <Link to="/about" className="flex items-center rounded-md p-3 hover:bg-white/5 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-bolt-darkblue/20 text-bolt-blue mr-3">
+                          <Building2 className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-white">About Us</div>
+                          <div className="text-xs text-gray-400">Our mission and vision</div>
+                        </div>
+                      </Link>
+                      
+                      <Link to="/careers" className="flex items-center rounded-md p-3 hover:bg-white/5 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-bolt-darkblue/20 text-bolt-blue mr-3">
+                          <Briefcase className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-white">Careers</div>
+                          <div className="text-xs text-gray-400">Join our growing team</div>
+                        </div>
+                      </Link>
+                      
+                      <Link to="/blog" className="flex items-center rounded-md p-3 hover:bg-white/5 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-bolt-darkblue/20 text-bolt-blue mr-3">
+                          <BookOpen className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-white">Blog</div>
+                          <div className="text-xs text-gray-400">Latest news and insights</div>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <NavLink to="/contact">
+                  <Phone className="mr-2 h-4 w-4" />
+                  Contact
+                </NavLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+        </nav>
+
+        <div className="hidden lg:flex items-center space-x-4">
           {isAuthenticated ? (
             <div className="flex items-center space-x-4">
               <Link
                 to="/dashboard"
-                className="nav-link flex items-center"
+                className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
               >
                 <User className="w-4 h-4 mr-2" />
                 {user?.name?.split(' ')[0] || 'Dashboard'}
               </Link>
               <button
                 onClick={logout}
-                className="text-white/80 hover:text-white"
+                className="text-white/80 hover:text-white transition-colors"
               >
                 Logout
               </button>
             </div>
           ) : (
-            <button
+            <motion.button
               onClick={() => setIsAuthModalOpen(true)}
               className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Zap className="w-4 h-4 mr-2" />
               Sign In
-            </button>
+            </motion.button>
           )}
-        </nav>
+        </div>
 
         <button
-          className="block md:hidden text-white z-50"
+          className="block lg:hidden text-white z-50"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMobileMenuOpen}
@@ -142,107 +266,178 @@ const Navbar = () => {
           )}
         </button>
 
-        <div
-          className={cn(
-            "fixed inset-0 bg-bolt-darker/95 backdrop-blur-md z-40 transform transition-transform duration-300 pt-20",
-            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <nav className="flex flex-col items-center space-y-8 p-8">
-            <Link
-              to="/"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/') ? "text-bolt-blue" : "text-white"
-              )}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed inset-0 bg-bolt-darker/95 backdrop-blur-md z-40 lg:hidden pt-20"
             >
-              Home
-            </Link>
-            <Link
-              to="/features"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/features') ? "text-bolt-blue" : "text-white"
-              )}
-            >
-              Features
-            </Link>
-            <Link
-              to="/pricing"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/pricing') ? "text-bolt-blue" : "text-white"
-              )}
-            >
-              Pricing
-            </Link>
-            <Link
-              to="/about"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/about') ? "text-bolt-blue" : "text-white"
-              )}
-            >
-              About
-            </Link>
-            <Link
-              to="/blog"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/blog') ? "text-bolt-blue" : "text-white"
-              )}
-            >
-              Blog
-            </Link>
-            <Link
-              to="/careers"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/careers') ? "text-bolt-blue" : "text-white"
-              )}
-            >
-              Careers
-            </Link>
-            <Link
-              to="/contact"
-              className={cn(
-                "text-xl font-medium",
-                isActive('/contact') ? "text-bolt-blue" : "text-white"
-              )}
-            >
-              Contact
-            </Link>
-            <div className="w-32 h-px bg-white/10 my-4"></div>
-            {isAuthenticated ? (
-              <>
+              <nav className="flex flex-col items-center space-y-6 p-8">
                 <Link
-                  to="/dashboard"
-                  className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+                  to="/"
+                  className={cn(
+                    "flex items-center text-xl font-medium",
+                    isActive('/') ? "text-bolt-blue" : "text-white"
+                  )}
                 >
-                  <User className="w-4 h-4 mr-2" />
-                  Dashboard
+                  <Home className="mr-2 h-5 w-5" />
+                  Home
                 </Link>
-                <button
-                  onClick={logout}
-                  className="text-white/80 hover:text-white text-xl font-medium"
+                
+                <div className="w-full">
+                  <div className={cn(
+                    "flex items-center justify-between w-full text-xl font-medium px-4 py-2 rounded-lg",
+                    isActive('/features') || isActive('/agents-demos') || isActive('/multi-agent-chat') || isActive('/agent-deployment')
+                      ? "bg-white/10 text-bolt-blue"
+                      : "text-white"
+                  )}>
+                    <div className="flex items-center">
+                      <Bot className="mr-2 h-5 w-5" />
+                      AI Agents
+                    </div>
+                  </div>
+                  <div className="ml-6 mt-2 space-y-2">
+                    <Link 
+                      to="/features" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/features') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      All Features
+                    </Link>
+                    <Link 
+                      to="/agents-demos" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/agents-demos') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      Agent Demos
+                    </Link>
+                    <Link 
+                      to="/multi-agent-chat" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/multi-agent-chat') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      Multi-Agent Chat
+                    </Link>
+                    <Link 
+                      to="/agent-deployment" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/agent-deployment') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      Deploy Your Own
+                    </Link>
+                  </div>
+                </div>
+                
+                <Link
+                  to="/pricing"
+                  className={cn(
+                    "flex items-center text-xl font-medium",
+                    isActive('/pricing') ? "text-bolt-blue" : "text-white"
+                  )}
                 >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => {
-                  setIsAuthModalOpen(true);
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
-              >
-                <Zap className="w-4 h-4 mr-2" />
-                Sign In
-              </button>
-            )}
-          </nav>
-        </div>
+                  <BarChart3 className="mr-2 h-5 w-5" />
+                  Pricing
+                </Link>
+                
+                <div className="w-full">
+                  <div className={cn(
+                    "flex items-center justify-between w-full text-xl font-medium px-4 py-2 rounded-lg",
+                    isActive('/about') || isActive('/careers') || isActive('/blog')
+                      ? "bg-white/10 text-bolt-blue"
+                      : "text-white"
+                  )}>
+                    <div className="flex items-center">
+                      <Building2 className="mr-2 h-5 w-5" />
+                      Company
+                    </div>
+                  </div>
+                  <div className="ml-6 mt-2 space-y-2">
+                    <Link 
+                      to="/about" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/about') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      About Us
+                    </Link>
+                    <Link 
+                      to="/careers" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/careers') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      Careers
+                    </Link>
+                    <Link 
+                      to="/blog" 
+                      className={cn(
+                        "block text-lg py-1 px-4 rounded-lg",
+                        isActive('/blog') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                      )}
+                    >
+                      Blog
+                    </Link>
+                  </div>
+                </div>
+                
+                <Link
+                  to="/contact"
+                  className={cn(
+                    "flex items-center text-xl font-medium",
+                    isActive('/contact') ? "text-bolt-blue" : "text-white"
+                  )}
+                >
+                  <Phone className="mr-2 h-5 w-5" />
+                  Contact
+                </Link>
+                
+                <div className="w-32 h-px bg-white/10 my-4"></div>
+                
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={logout}
+                      className="text-white/80 hover:text-white text-xl font-medium"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsAuthModalOpen(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+                  >
+                    <Zap className="w-4 h-4 mr-2" />
+                    Sign In
+                  </button>
+                )}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         <AuthModal 
           isOpen={isAuthModalOpen} 

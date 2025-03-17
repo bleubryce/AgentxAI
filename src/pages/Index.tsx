@@ -7,6 +7,7 @@ import Features from "@/components/Features";
 import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
 import { MultiAgentChatPromo } from "@/components/MultiAgentChatPromo";
+import Navbar from "@/components/Navbar";
 
 const Index = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -45,14 +46,14 @@ const Index = () => {
   // Generate particles for luxury effect
   const renderGoldParticles = () => {
     const particles = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
       const size = Math.random() * 10 + 5;
       const left = Math.random() * 100;
       const top = Math.random() * 100;
       const delay = Math.random() * 5;
       
       particles.push(
-        <div 
+        <motion.div 
           key={i}
           className="particle" 
           style={{
@@ -61,6 +62,17 @@ const Index = () => {
             left: `${left}%`,
             top: `${top}%`,
             animationDelay: `${delay}s`
+          }}
+          animate={{
+            y: [0, -100, 0],
+            opacity: [0, 0.7, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{
+            duration: 15 + Math.random() * 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: delay
           }}
         />
       );
@@ -112,6 +124,9 @@ const Index = () => {
       </Helmet>
       
       <main className="overflow-hidden relative">
+        {/* Navbar */}
+        <Navbar />
+        
         {/* Gold Particles */}
         <div className="fixed inset-0 pointer-events-none z-10">
           {renderGoldParticles()}
