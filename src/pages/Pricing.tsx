@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { CheckCircle2, X, ArrowRight, Zap, Building2, MessageSquare, Calendar, FileText, BarChart3, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -268,7 +267,7 @@ const PricingPage = () => {
                             </span>
                           </>
                         ) : (
-                          <span className="text-4xl font-bold">{tier.priceDisplay}</span>
+                          <span className="text-4xl font-bold">Custom Pricing</span>
                         )}
                       </div>
                       
@@ -605,90 +604,4 @@ const PricingPage = () => {
                       <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className="button-glow inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
-                      >
-                        <span>Contact For Enterprise Quote</span>
-                        <ArrowRight className="ml-2 w-5 h-5" />
-                      </motion.button>
-                    </RouterLink>
-                  </motion.div>
-                </div>
-                <div className="md:w-1/3">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="relative"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full blur-[50px] opacity-30"></div>
-                    <div className="relative bg-bolt-darker/80 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center">
-                      <Building2 className="w-16 h-16 text-bolt-blue mx-auto mb-4" />
-                      <h4 className="text-xl font-medium mb-2">Brokerage Package</h4>
-                      <p className="text-gray-400 mb-4">Customized pricing based on size and needs</p>
-                      <div className="text-sm text-gray-300 space-y-2">
-                        <p>50+ agents</p>
-                        <p>Custom branding</p>
-                        <p>Advanced reporting</p>
-                        <p>Dedicated account manager</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Call to Action */}
-        <section className="py-20 bg-bolt-dark relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-bolt-blue/5 rounded-full blur-[100px] -translate-y-1/4 translate-x-1/4"></div>
-          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-bolt-purple/5 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4"></div>
-          
-          <div className="container mx-auto px-4 lg:px-8 text-center">
-            <div className="max-w-3xl mx-auto">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-3xl md:text-4xl font-clash font-semibold mb-6"
-              >
-                Ready to <span className="text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple">Transform</span> Your Real Estate Business?
-              </motion.h2>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-lg text-gray-300 mb-8"
-              >
-                Start your 7-day trial today and experience the power of AI-driven real estate automation.
-              </motion.p>
-              <motion.a 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                href="#trial" 
-                className="button-glow inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Start Your Trial</span>
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </motion.a>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="text-sm text-gray-400 mt-4"
-              >
-                Credit card required. Cancel anytime.
-              </motion.p>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-};
-
-export default PricingPage;
+                        className="button-glow inline-flex items-
