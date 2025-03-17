@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,7 @@ import CareersPage from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
+import AgentsDemos from "./pages/AgentsDemos";
 import TestAuth from "./pages/TestAuth";
 import { createAuthListener } from "./services/auth";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
@@ -118,6 +118,7 @@ const AnimatedRoutes = () => {
         <Route path="/blog" element={<PageTransition><BlogPage /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><CareersPage /></PageTransition>} />
         <Route path="/test-auth" element={<PageTransition><TestAuth /></PageTransition>} />
+        <Route path="/agents-demos" element={<PageTransition><AgentsDemos /></PageTransition>} />
         
         {/* Protected routes - only for authenticated clients */}
         <Route 
