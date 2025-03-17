@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,6 +16,12 @@ const Index = () => {
   const [scrollY, setScrollY] = useState(0);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const { isAuthenticated } = useAuth();
+
+  // Ensure the component is visible
+  useEffect(() => {
+    console.log("Index component mounted");
+    document.body.style.opacity = '1';
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);

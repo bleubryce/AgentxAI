@@ -1,7 +1,11 @@
 
-import { motion } from 'framer-motion';
+import { motion, useEffect } from 'framer-motion';
 
 const HeroClients = () => {
+  useEffect(() => {
+    console.log("HeroClients component mounted");
+  }, []);
+
   const clients = [
     { name: "Google", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" },
     { name: "Microsoft", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png" },

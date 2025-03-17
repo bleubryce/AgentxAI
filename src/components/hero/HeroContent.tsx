@@ -1,5 +1,5 @@
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import HeroHeading from './HeroHeading';
 import HeroFeatureTab from './HeroFeatureTab';
@@ -7,6 +7,16 @@ import HeroCard from './HeroCard';
 
 const HeroContent = () => {
   const textRef = useRef<HTMLHeadingElement>(null);
+  
+  // Add effect to ensure visibility
+  useEffect(() => {
+    console.log("HeroContent mounted - ensuring visibility");
+    
+    // Force a redraw if needed
+    if (document.body.style.display === 'none') {
+      document.body.style.display = 'block';
+    }
+  }, []);
   
   return (
     <div className="container relative z-10 mx-auto px-4 lg:px-8 pt-10 pb-20">
