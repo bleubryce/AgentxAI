@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { CheckCircle2, X, ArrowRight, Zap, Building2, MessageSquare, Calendar, FileText, BarChart3, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -604,4 +605,38 @@ const PricingPage = () => {
                       <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
-                        className="button-glow inline-flex items-
+                        className="button-glow inline-flex items-center bg-gradient-to-r from-bolt-blue to-bolt-purple px-6 py-3 rounded-full text-white font-medium shadow-glow-blue"
+                      >
+                        Contact for Enterprise Pricing
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </motion.button>
+                    </RouterLink>
+                  </motion.div>
+                </div>
+                <div className="flex-1">
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-white/5 rounded-xl p-6 border border-white/10"
+                  >
+                    <h4 className="text-xl font-medium mb-4">Request Custom Quote</h4>
+                    <p className="text-gray-300 mb-4">Already have a team ready to get started? Leave your details and we'll prepare a custom enterprise solution.</p>
+                    <RouterLink to="/contact">
+                      <button className="w-full bg-white/10 hover:bg-white/15 px-6 py-3 rounded-lg text-white font-medium transition-all duration-300">
+                        Get Started
+                      </button>
+                    </RouterLink>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default PricingPage;
