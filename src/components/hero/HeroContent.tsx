@@ -12,12 +12,12 @@ const HeroContent = () => {
     <div className="container relative z-10 mx-auto px-4 lg:px-8 pt-10 pb-20">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center gap-16">
-          <div className="lg:w-7/12 space-y-8 animate-fade-in content-overlay">
+          <div className="lg:w-7/12 space-y-8">
             <HeroHeading textRef={textRef} />
             <HeroFeatureTab />
           </div>
           
-          <div className="lg:w-5/12 animate-fade-in">
+          <div className="lg:w-5/12">
             <HeroCard />
           </div>
         </div>

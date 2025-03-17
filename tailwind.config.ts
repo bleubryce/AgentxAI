@@ -63,18 +63,30 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// New color scheme with gold and black
-				gold: {
-					50: '#FFF9E5',
-					100: '#FFF2CC',
-					200: '#FFE699',
-					300: '#FFD966',
-					400: '#FFCC33',
-					500: '#FFC000', // Main gold color
-					600: '#E6AC00',
-					700: '#CC9900',
-					800: '#B38600',
-					900: '#997300',
+				// New futuristic color scheme with purple and blue
+				purple: {
+					50: '#F5F3FF',
+					100: '#EDE9FE',
+					200: '#DDD6FE',
+					300: '#C4B5FD',
+					400: '#A78BFA',
+					500: '#8B5CF6', // Main purple color
+					600: '#7C3AED',
+					700: '#6D28D9',
+					800: '#5B21B6',
+					900: '#4C1D95',
+				},
+				blue: {
+					50: '#EFF6FF',
+					100: '#DBEAFE',
+					200: '#BFDBFE',
+					300: '#93C5FD',
+					400: '#60A5FA',
+					500: '#3B82F6', // Main blue color
+					600: '#2563EB',
+					700: '#1D4ED8',
+					800: '#1E40AF',
+					900: '#1E3A8A',
 				},
 				jet: {
 					50: '#f6f6f6',
@@ -85,8 +97,8 @@ export default {
 					500: '#6d6d6d',
 					600: '#5d5d5d',
 					700: '#4f4f4f',
-					800: '#454545', // Main deep black
-					900: '#3d3d3d',
+					800: '#454545', 
+					900: '#262626',
 					950: '#121212', // Almost black
 				}
 			},
@@ -140,6 +152,18 @@ export default {
 				'shimmer': {
 					'0%': { backgroundPosition: '-200% 0' },
 					'100%': { backgroundPosition: '200% 0' }
+				},
+				'bounce-subtle': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' }
+				},
+				'neon-pulse': {
+					'0%, 100%': { boxShadow: '0 0 5px rgba(147, 51, 234, 0.5), 0 0 10px rgba(147, 51, 234, 0.3)' },
+					'50%': { boxShadow: '0 0 20px rgba(147, 51, 234, 0.8), 0 0 30px rgba(147, 51, 234, 0.5)' }
+				},
+				'scan-line': {
+					'0%': { top: '0%' },
+					'100%': { top: '100%' }
 				}
 			},
 			animation: {
@@ -153,21 +177,34 @@ export default {
 				'fade-in-right': 'fade-in-right 0.8s ease-out',
 				'rotate-slow': 'rotate-slow 12s linear infinite',
 				'blur-in': 'blur-in 0.6s ease-out forwards',
-				'shimmer': 'shimmer 2s infinite linear'
+				'shimmer': 'shimmer 2s infinite linear',
+				'bounce-subtle': 'bounce-subtle 3s ease-in-out infinite',
+				'neon-pulse': 'neon-pulse 2s ease-in-out infinite',
+				'scan-line': 'scan-line 3s linear infinite'
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'gold-gradient': 'linear-gradient(90deg, #FFC000 0%, #FFDF80 100%)',
-				'dark-gradient': 'linear-gradient(180deg, #121212 0%, #2A2A2A 100%)',
-				'glow-gold': 'radial-gradient(circle, rgba(255,192,0,0.15) 0%, rgba(255,192,0,0) 70%)',
-				'shimmer-gold': 'linear-gradient(90deg, rgba(255,192,0,0) 0%, rgba(255,192,0,0.5) 50%, rgba(255,192,0,0) 100%)'
+				'purple-gradient': 'linear-gradient(90deg, #8B5CF6 0%, #6366F1 100%)',
+				'blue-gradient': 'linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%)',
+				'cyber-gradient': 'linear-gradient(180deg, #121212 0%, #2A2A2A 100%)',
+				'glow-purple': 'radial-gradient(circle, rgba(147,51,234,0.15) 0%, rgba(147,51,234,0) 70%)',
+				'glow-blue': 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0) 70%)',
+				'shimmer-purple': 'linear-gradient(90deg, rgba(147,51,234,0) 0%, rgba(147,51,234,0.5) 50%, rgba(147,51,234,0) 100%)',
+				'cyberpunk-grid': 'linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)'
 			},
 			boxShadow: {
-				'glow-gold': '0 0 20px rgba(255,192,0,0.5)',
-				'inner-gold': 'inset 0 2px 5px rgba(255,192,0,0.3)'
+				'glow-purple': '0 0 20px rgba(147,51,234,0.5)',
+				'glow-blue': '0 0 20px rgba(59,130,246,0.5)',
+				'inner-purple': 'inset 0 2px 5px rgba(147,51,234,0.3)',
+				'inner-blue': 'inset 0 2px 5px rgba(59,130,246,0.3)',
+				'neon-purple': '0 0 5px rgba(147,51,234,0.5), 0 0 10px rgba(147,51,234,0.3)',
+				'neon-blue': '0 0 5px rgba(59,130,246,0.5), 0 0 10px rgba(59,130,246,0.3)'
 			},
 			backdropBlur: {
 				xs: '2px'
+			},
+			fontFamily: {
+				'orbitron': ['Orbitron', 'sans-serif']
 			}
 		}
 	},
