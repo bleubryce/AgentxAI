@@ -153,8 +153,9 @@ const ContactPage = () => {
                         id="subject"
                         className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white focus:border-bolt-blue focus:outline-none focus:ring-1 focus:ring-bolt-blue transition-all duration-200"
                         required
+                        defaultValue=""
                       >
-                        <option value="" disabled selected className="text-white/50">Select a subject</option>
+                        <option value="" disabled>Select a subject</option>
                         <option value="sales">Sales Inquiry</option>
                         <option value="support">Technical Support</option>
                         <option value="demo">Request a Demo</option>
