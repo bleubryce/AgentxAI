@@ -33,7 +33,7 @@ export const ChatWindow = ({ messages, selectedAgent }: ChatWindowProps) => {
                 </span>
               </div>
             )}
-            <p className="whitespace-pre-wrap">{message.content}</p>
+            <div className="whitespace-pre-wrap">{message.content}</div>
             <div className="text-xs opacity-70 mt-1 text-right">
               {formatDistanceToNow(message.timestamp, { addSuffix: true })}
             </div>
@@ -42,9 +42,9 @@ export const ChatWindow = ({ messages, selectedAgent }: ChatWindowProps) => {
       ))}
       {messages.length === 0 && (
         <div className="flex items-center justify-center h-full">
-          <p className="text-muted-foreground text-center">
+          <div className="text-muted-foreground text-center">
             No messages yet. Start a conversation with {selectedAgent.name}!
-          </p>
+          </div>
         </div>
       )}
     </div>
