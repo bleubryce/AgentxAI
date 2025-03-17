@@ -26,9 +26,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Initialize auth state on mount
   useEffect(() => {
     const checkAuth = () => {
-      const currentUser = AuthService.getCurrentUser();
-      setUser(currentUser);
-      setIsLoading(false);
+      try {
+        const currentUser = AuthService.getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Error checking auth state:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     // Check auth state on mount
@@ -45,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  // Wrap AuthService methods
+  // Wrap AuthService methods with error handling
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
@@ -54,6 +59,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(AuthService.getCurrentUser());
       }
       return success;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -67,33 +75,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(AuthService.getCurrentUser());
       }
       return success;
+    } catch (error) {
+      console.error("Registration error:", error);
+      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
   const loginWithGoogle = async (): Promise<void> => {
-    return AuthService.loginWithGoogle();
+    try {
+      await AuthService.loginWithGoogle();
+      // User state will be updated via the auth_state_change event
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
   };
 
   const loginWithApple = async (): Promise<void> => {
-    return AuthService.loginWithApple();
+    try {
+      await AuthService.loginWithApple();
+      // User state will be updated via the auth_state_change event
+    } catch (error) {
+      console.error("Apple login error:", error);
+    }
   };
 
   const logout = (): void => {
-    AuthService.logout();
-    setUser(null);
+    try {
+      AuthService.logout();
+      setUser(null);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const hasFeatureAccess = (feature: string): boolean => {
-    return AuthService.hasFeatureAccess(feature);
+    try {
+      return AuthService.hasFeatureAccess(feature);
+    } catch (error) {
+      console.error("Feature access check error:", error);
+      return false;
+    }
   };
 
   const value = {
     user,
     isLoading,
     isAuthenticated: !!user,
-    hasActiveSubscription: AuthService.hasActiveSubscription(),
+    hasActiveSubscription: user ? AuthService.hasActiveSubscription() : false,
     hasFeatureAccess,
     login,
     loginWithGoogle,
