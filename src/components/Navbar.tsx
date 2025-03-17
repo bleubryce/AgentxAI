@@ -48,8 +48,9 @@ const Navbar = () => {
     <Link
       to={to}
       className={cn(
-        "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-        isActive(to) ? "bg-white/10 text-white" : "text-white/70",
+        "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gold-500/10 hover:text-gold-400 focus:bg-gold-500/10 focus:text-gold-400 focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+        isActive(to) ? "text-gold-400 after:w-full" : "text-white/80",
+        "relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-gold-500 after:w-0 hover:after:w-full after:transition-all after:duration-300",
         className
       )}
     >
@@ -62,7 +63,7 @@ const Navbar = () => {
       className={cn(
         'fixed top-0 left-0 w-full z-50 transition-all duration-300',
         isScrolled
-          ? 'py-3 bg-bolt-darker/80 backdrop-blur-md shadow-md'
+          ? 'py-3 bg-gradient-to-r from-jet-950/90 to-jet-900/90 backdrop-blur-md shadow-md border-b border-gold-500/10'
           : 'py-5 bg-transparent'
       )}
     >
@@ -75,20 +76,20 @@ const Navbar = () => {
           <motion.div 
             whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
             transition={{ duration: 0.5 }}
-            className="w-10 h-10 rounded-full bg-gradient-to-r from-bolt-blue to-bolt-purple flex items-center justify-center overflow-hidden group-hover:shadow-glow-blue transition-shadow duration-300"
+            className="w-10 h-10 rounded-full bg-gradient-to-r from-gold-400 to-gold-600 flex items-center justify-center overflow-hidden group-hover:shadow-glow-gold transition-shadow duration-300"
           >
-            <svg className="w-6 h-6 text-bolt-dark" fill="currentColor" viewBox="0 0 256 256">
+            <svg className="w-6 h-6 text-jet-950" fill="currentColor" viewBox="0 0 256 256">
               <path d="M212.92,75.5l-52,32A8,8,0,0,1,152,100V36a8,8,0,0,0-13.7-5.64l-112,112A8,8,0,0,0,32,156h76v64a8,8,0,0,0,13.7,5.64l112-112A8,8,0,0,0,232,100H156S213.72,75,212.92,75.5Z" />
             </svg>
           </motion.div>
           <span className="text-xl font-clash font-semibold">
-            AGENT<span className="text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text">X AI</span>
+            AGENT<span className="text-gradient bg-gold-gradient bg-clip-text">X AI</span>
           </span>
         </Link>
 
         <nav className="hidden lg:block">
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-1">
               <NavigationMenuItem>
                 <NavLink to="/">
                   <Home className="mr-2 h-4 w-4" />
@@ -98,8 +99,9 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <NavigationMenuTrigger className={cn(
-                  "bg-transparent hover:bg-white/10 hover:text-white", 
-                  isActive('/features') ? "text-white" : "text-white/70"
+                  "bg-transparent hover:bg-gold-500/10 hover:text-gold-400 h-10 px-4 py-2 text-sm", 
+                  "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-gold-500 after:w-0 hover:after:w-full after:transition-all after:duration-300",
+                  isActive('/features') ? "text-gold-400 after:w-full" : "text-white/80"
                 )}>
                   <Bot className="mr-2 h-4 w-4" />
                   AI Agents
@@ -109,45 +111,45 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2 bg-bolt-darker/90 backdrop-blur-md border border-white/10 rounded-xl shadow-xl"
+                    className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2 bg-gradient-to-b from-jet-900/95 to-jet-950/95 backdrop-blur-md border border-gold-500/20 rounded-xl shadow-xl"
                   >
-                    <Link to="/features" className="row-span-3 rounded-md bg-gradient-to-b from-bolt-darkblue/30 to-transparent p-6 hover:bg-white/5 transition-colors">
+                    <Link to="/features" className="row-span-3 rounded-md bg-gradient-to-b from-gold-500/10 to-transparent p-6 hover:bg-gold-500/15 transition-colors">
                       <div className="mb-2 mt-4 text-lg font-medium text-white">AI Agent Features</div>
-                      <p className="text-sm leading-tight text-gray-400">
+                      <p className="text-sm leading-tight text-gray-300">
                         Explore our full suite of AI agents designed to revolutionize your real estate business.
                       </p>
-                      <div className="mt-4 flex items-center text-sm text-bolt-blue">
+                      <div className="mt-4 flex items-center text-sm text-gold-400">
                         Learn more <ChevronDown className="h-4 w-4 ml-1 rotate-[-90deg]" />
                       </div>
                     </Link>
                     
-                    <Link to="/agents-demos" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                    <Link to="/agents-demos" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-gold-500/10 border border-transparent hover:border-gold-500/20 transition-all duration-300">
                       <div className="mb-2 flex items-center">
-                        <BarChart3 className="h-5 w-5 text-bolt-blue mr-2" />
+                        <BarChart3 className="h-5 w-5 text-gold-400 mr-2" />
                         <div className="text-sm font-medium text-white">Lead Generation</div>
                       </div>
                       <p className="text-xs text-gray-400">AI-driven lead qualification and nurturing</p>
                     </Link>
                     
-                    <Link to="/agents-demos" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                    <Link to="/agents-demos" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-gold-500/10 border border-transparent hover:border-gold-500/20 transition-all duration-300">
                       <div className="mb-2 flex items-center">
-                        <Home className="h-5 w-5 text-bolt-blue mr-2" />
+                        <Home className="h-5 w-5 text-gold-400 mr-2" />
                         <div className="text-sm font-medium text-white">Property Matching</div>
                       </div>
                       <p className="text-xs text-gray-400">Smart property recommendations for clients</p>
                     </Link>
                     
-                    <Link to="/multi-agent-chat" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                    <Link to="/multi-agent-chat" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-gold-500/10 border border-transparent hover:border-gold-500/20 transition-all duration-300">
                       <div className="mb-2 flex items-center">
-                        <Users className="h-5 w-5 text-bolt-blue mr-2" />
+                        <Users className="h-5 w-5 text-gold-400 mr-2" />
                         <div className="text-sm font-medium text-white">Multi-Agent Chat</div>
                       </div>
                       <p className="text-xs text-gray-400">Experience our collaborative AI agents in action</p>
                     </Link>
                     
-                    <Link to="/agent-deployment" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                    <Link to="/agent-deployment" className="group flex h-full w-full select-none flex-col justify-end rounded-md bg-white/5 p-4 hover:bg-gold-500/10 border border-transparent hover:border-gold-500/20 transition-all duration-300">
                       <div className="mb-2 flex items-center">
-                        <Zap className="h-5 w-5 text-bolt-blue mr-2" />
+                        <Zap className="h-5 w-5 text-gold-400 mr-2" />
                         <div className="text-sm font-medium text-white">Deploy Your Own</div>
                       </div>
                       <p className="text-xs text-gray-400">Create and deploy custom AI agents for your needs</p>
@@ -165,8 +167,9 @@ const Navbar = () => {
               
               <NavigationMenuItem>
                 <NavigationMenuTrigger className={cn(
-                  "bg-transparent hover:bg-white/10 hover:text-white", 
-                  (isActive('/about') || isActive('/careers') || isActive('/blog')) ? "text-white" : "text-white/70"
+                  "bg-transparent hover:bg-gold-500/10 hover:text-gold-400 h-10 px-4 py-2 text-sm", 
+                  "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:bg-gold-500 after:w-0 hover:after:w-full after:transition-all after:duration-300",
+                  (isActive('/about') || isActive('/careers') || isActive('/blog')) ? "text-gold-400 after:w-full" : "text-white/80"
                 )}>
                   <Building2 className="mr-2 h-4 w-4" />
                   Company
@@ -176,11 +179,11 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="grid gap-3 p-6 md:w-[400px] bg-bolt-darker/90 backdrop-blur-md border border-white/10 rounded-xl shadow-xl"
+                    className="grid gap-3 p-6 md:w-[400px] bg-gradient-to-b from-jet-900/95 to-jet-950/95 backdrop-blur-md border border-gold-500/20 rounded-xl shadow-xl"
                   >
                     <div className="grid grid-cols-1 gap-3">
-                      <Link to="/about" className="flex items-center rounded-md p-3 hover:bg-white/5 transition-colors">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-bolt-darkblue/20 text-bolt-blue mr-3">
+                      <Link to="/about" className="flex items-center rounded-md p-3 hover:bg-gold-500/10 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-gold-500/10 text-gold-400 mr-3">
                           <Building2 className="h-5 w-5" />
                         </div>
                         <div>
@@ -189,8 +192,8 @@ const Navbar = () => {
                         </div>
                       </Link>
                       
-                      <Link to="/careers" className="flex items-center rounded-md p-3 hover:bg-white/5 transition-colors">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-bolt-darkblue/20 text-bolt-blue mr-3">
+                      <Link to="/careers" className="flex items-center rounded-md p-3 hover:bg-gold-500/10 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-gold-500/10 text-gold-400 mr-3">
                           <Briefcase className="h-5 w-5" />
                         </div>
                         <div>
@@ -199,8 +202,8 @@ const Navbar = () => {
                         </div>
                       </Link>
                       
-                      <Link to="/blog" className="flex items-center rounded-md p-3 hover:bg-white/5 transition-colors">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-bolt-darkblue/20 text-bolt-blue mr-3">
+                      <Link to="/blog" className="flex items-center rounded-md p-3 hover:bg-gold-500/10 transition-colors">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-gold-500/10 text-gold-400 mr-3">
                           <BookOpen className="h-5 w-5" />
                         </div>
                         <div>
@@ -228,14 +231,14 @@ const Navbar = () => {
             <div className="flex items-center space-x-4">
               <Link
                 to="/dashboard"
-                className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
+                className="px-6 py-2.5 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full text-jet-950 font-medium hover:shadow-glow-gold transition-all duration-300 flex items-center"
               >
                 <User className="w-4 h-4 mr-2" />
                 {user?.name?.split(' ')[0] || 'Dashboard'}
               </Link>
               <button
                 onClick={logout}
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-white/80 hover:text-gold-400 transition-colors"
               >
                 Logout
               </button>
@@ -243,7 +246,7 @@ const Navbar = () => {
           ) : (
             <motion.button
               onClick={() => setIsAuthModalOpen(true)}
-              className="button-glow px-6 py-2.5 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium hover:shadow-glow-blue transition-all duration-300 flex items-center"
+              className="px-6 py-2.5 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full text-jet-950 font-medium hover:shadow-glow-gold transition-all duration-300 flex items-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -273,14 +276,14 @@ const Navbar = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed inset-0 bg-bolt-darker/95 backdrop-blur-md z-40 lg:hidden pt-20"
+              className="fixed inset-0 bg-gradient-to-b from-jet-900/98 to-jet-950/98 backdrop-blur-md z-40 lg:hidden pt-20"
             >
               <nav className="flex flex-col items-center space-y-6 p-8">
                 <Link
                   to="/"
                   className={cn(
                     "flex items-center text-xl font-medium",
-                    isActive('/') ? "text-bolt-blue" : "text-white"
+                    isActive('/') ? "text-gold-400" : "text-white"
                   )}
                 >
                   <Home className="mr-2 h-5 w-5" />
@@ -291,7 +294,7 @@ const Navbar = () => {
                   <div className={cn(
                     "flex items-center justify-between w-full text-xl font-medium px-4 py-2 rounded-lg",
                     isActive('/features') || isActive('/agents-demos') || isActive('/multi-agent-chat') || isActive('/agent-deployment')
-                      ? "bg-white/10 text-bolt-blue"
+                      ? "bg-gold-500/10 text-gold-400"
                       : "text-white"
                   )}>
                     <div className="flex items-center">
@@ -304,7 +307,7 @@ const Navbar = () => {
                       to="/features" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/features') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/features') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       All Features
@@ -313,7 +316,7 @@ const Navbar = () => {
                       to="/agents-demos" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/agents-demos') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/agents-demos') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       Agent Demos
@@ -322,7 +325,7 @@ const Navbar = () => {
                       to="/multi-agent-chat" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/multi-agent-chat') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/multi-agent-chat') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       Multi-Agent Chat
@@ -331,7 +334,7 @@ const Navbar = () => {
                       to="/agent-deployment" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/agent-deployment') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/agent-deployment') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       Deploy Your Own
@@ -343,7 +346,7 @@ const Navbar = () => {
                   to="/pricing"
                   className={cn(
                     "flex items-center text-xl font-medium",
-                    isActive('/pricing') ? "text-bolt-blue" : "text-white"
+                    isActive('/pricing') ? "text-gold-400" : "text-white"
                   )}
                 >
                   <BarChart3 className="mr-2 h-5 w-5" />
@@ -354,7 +357,7 @@ const Navbar = () => {
                   <div className={cn(
                     "flex items-center justify-between w-full text-xl font-medium px-4 py-2 rounded-lg",
                     isActive('/about') || isActive('/careers') || isActive('/blog')
-                      ? "bg-white/10 text-bolt-blue"
+                      ? "bg-gold-500/10 text-gold-400"
                       : "text-white"
                   )}>
                     <div className="flex items-center">
@@ -367,7 +370,7 @@ const Navbar = () => {
                       to="/about" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/about') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/about') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       About Us
@@ -376,7 +379,7 @@ const Navbar = () => {
                       to="/careers" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/careers') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/careers') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       Careers
@@ -385,7 +388,7 @@ const Navbar = () => {
                       to="/blog" 
                       className={cn(
                         "block text-lg py-1 px-4 rounded-lg",
-                        isActive('/blog') ? "text-bolt-blue bg-white/5" : "text-white/80"
+                        isActive('/blog') ? "text-gold-400 bg-gold-500/5" : "text-white/80"
                       )}
                     >
                       Blog
@@ -397,27 +400,27 @@ const Navbar = () => {
                   to="/contact"
                   className={cn(
                     "flex items-center text-xl font-medium",
-                    isActive('/contact') ? "text-bolt-blue" : "text-white"
+                    isActive('/contact') ? "text-gold-400" : "text-white"
                   )}
                 >
                   <Phone className="mr-2 h-5 w-5" />
                   Contact
                 </Link>
                 
-                <div className="w-32 h-px bg-white/10 my-4"></div>
+                <div className="w-full h-px bg-gold-500/10 my-4"></div>
                 
                 {isAuthenticated ? (
                   <>
                     <Link
                       to="/dashboard"
-                      className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+                      className="w-full max-w-xs px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full text-jet-950 font-medium text-center hover:shadow-glow-gold transition-all duration-300 flex items-center justify-center"
                     >
                       <User className="w-4 h-4 mr-2" />
                       Dashboard
                     </Link>
                     <button
                       onClick={logout}
-                      className="text-white/80 hover:text-white text-xl font-medium"
+                      className="text-white/80 hover:text-gold-400 text-xl font-medium"
                     >
                       Logout
                     </button>
@@ -428,7 +431,7 @@ const Navbar = () => {
                       setIsAuthModalOpen(true);
                       setIsMobileMenuOpen(false);
                     }}
-                    className="w-full max-w-xs button-glow px-6 py-3 bg-gradient-to-r from-bolt-blue to-bolt-purple rounded-full text-white font-medium text-center hover:shadow-glow-blue transition-all duration-300 flex items-center justify-center"
+                    className="w-full max-w-xs px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full text-jet-950 font-medium text-center hover:shadow-glow-gold transition-all duration-300 flex items-center justify-center"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     Sign In
