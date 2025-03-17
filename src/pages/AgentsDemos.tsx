@@ -12,6 +12,7 @@ import DocumentManagementDemo from "@/components/demos/DocumentManagementDemo";
 import PropertyMatchingDemo from "@/components/demos/PropertyMatchingDemo";
 import ClientCommunicationDemo from "@/components/demos/ClientCommunicationDemo";
 import ContentCreationDemo from "@/components/demos/ContentCreationDemo";
+import { Helmet } from "react-helmet";
 
 const AgentsDemos = () => {
   const [activeTab, setActiveTab] = useState("lead-generation");
@@ -38,6 +39,11 @@ const AgentsDemos = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-bolt-dark to-bolt-darker">
+      <Helmet>
+        <title>AI Agent Demos | AgentX AI</title>
+        <meta name="description" content="Experience our AI agents in action with interactive demos for lead generation, document management, property matching, client communication, and content creation." />
+      </Helmet>
+      
       <Navbar />
       
       <motion.main 
@@ -77,6 +83,12 @@ const AgentsDemos = () => {
               className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
             >
               Back to Agents Overview
+            </Button>
+            <Button
+              onClick={() => navigate("/")}
+              className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
+            >
+              Back to Home
             </Button>
           </motion.div>
         </div>

@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Bot, BarChart3, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   
@@ -79,7 +81,13 @@ const Hero = () => {
                   Get Started
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="rounded-full border-white/20 hover:bg-white/10 transition-colors duration-300">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="rounded-full border-white/20 hover:bg-white/10 transition-colors duration-300"
+                  onClick={() => navigate('/agents-demos')}
+                  aria-label="Watch demo of AI agents"
+                >
                   Watch Demo
                 </Button>
               </div>
