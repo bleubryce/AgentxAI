@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Bot, BarChart3, CheckCircle2, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -59,138 +58,8 @@ const Hero = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Premium navigation */}
-      <div className="container relative z-50 mx-auto px-4 lg:px-8 py-4">
-        <NavigationMenu className="mx-auto max-w-screen-2xl">
-          <NavigationMenuList className="gap-6">
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-gold-500/10 text-white font-medium">Solutions</NavigationMenuTrigger>
-              <NavigationMenuContent className="premium-card">
-                <div className="grid grid-cols-2 gap-3 p-4 w-[500px]">
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <a href="/features" className="group flex h-full w-full flex-col justify-between rounded-md border border-gold-500/20 bg-jet-900/60 p-4 hover:border-gold-500/40 transition-all duration-300">
-                        <div className="mb-2 text-lg font-medium text-white">AI Agents</div>
-                        <div className="text-sm text-gray-300">Autonomous agents that handle your workflow</div>
-                        <div className="mt-4">
-                          <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                        </div>
-                      </a>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="premium-card w-80">
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-white">AI Agents</h4>
-                        <p className="text-sm text-gray-300">
-                          Our AI agents work autonomously to streamline your workflow and increase productivity.
-                        </p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <a href="/multi-agent-chat" className="group flex h-full w-full flex-col justify-between rounded-md border border-gold-500/20 bg-jet-900/60 p-4 hover:border-gold-500/40 transition-all duration-300">
-                        <div className="mb-2 text-lg font-medium text-white">Multi-Agent Chat</div>
-                        <div className="text-sm text-gray-300">Multiple AI experts collaborate in real-time</div>
-                        <div className="mt-4">
-                          <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                        </div>
-                      </a>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="premium-card w-80">
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-white">Multi-Agent Chat</h4>
-                        <p className="text-sm text-gray-300">
-                          Experience the power of multiple AI experts working together to solve complex problems.
-                        </p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <a href="/agents-demos" className="group flex h-full w-full flex-col justify-between rounded-md border border-gold-500/20 bg-jet-900/60 p-4 hover:border-gold-500/40 transition-all duration-300">
-                        <div className="mb-2 text-lg font-medium text-white">Demos</div>
-                        <div className="text-sm text-gray-300">See our AI systems in action</div>
-                        <div className="mt-4">
-                          <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                        </div>
-                      </a>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="premium-card w-80">
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-white">Interactive Demos</h4>
-                        <p className="text-sm text-gray-300">
-                          Explore our interactive demos to see how our AI solutions can transform your business.
-                        </p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <a href="/agent-deployment" className="group flex h-full w-full flex-col justify-between rounded-md border border-gold-500/20 bg-jet-900/60 p-4 hover:border-gold-500/40 transition-all duration-300">
-                        <div className="mb-2 text-lg font-medium text-white">Custom Deployment</div>
-                        <div className="text-sm text-gray-300">Deploy custom AI solutions</div>
-                        <div className="mt-4">
-                          <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                        </div>
-                      </a>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="premium-card w-80">
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-white">Custom Deployment</h4>
-                        <p className="text-sm text-gray-300">
-                          We offer custom AI deployment tailored to your specific business needs and requirements.
-                        </p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent hover:bg-gold-500/10 text-white font-medium">Resources</NavigationMenuTrigger>
-              <NavigationMenuContent className="premium-card">
-                <div className="grid grid-cols-1 gap-3 p-4 w-[300px]">
-                  <a href="/about" className="group flex items-center space-x-2 rounded-md border border-gold-500/20 bg-jet-900/60 p-3 hover:border-gold-500/40 transition-all duration-300">
-                    <div className="flex-1">
-                      <div className="text-white">About Us</div>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                  </a>
-                  <a href="/blog" className="group flex items-center space-x-2 rounded-md border border-gold-500/20 bg-jet-900/60 p-3 hover:border-gold-500/40 transition-all duration-300">
-                    <div className="flex-1">
-                      <div className="text-white">Blog</div>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                  </a>
-                  <a href="/careers" className="group flex items-center space-x-2 rounded-md border border-gold-500/20 bg-jet-900/60 p-3 hover:border-gold-500/40 transition-all duration-300">
-                    <div className="flex-1">
-                      <div className="text-white">Careers</div>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-gold-500 opacity-0 transition-opacity group-hover:opacity-100" />
-                  </a>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <a href="/pricing" className="text-white font-medium hover:text-gold-500 transition-colors">
-                Pricing
-              </a>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <a href="/contact" className="text-white font-medium hover:text-gold-500 transition-colors">
-                Contact
-              </a>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-
+      {/* Removed the duplicate navigation menu that was here */}
+      
       {/* Stronger overlay gradient for better contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-jet-950/95 via-jet-950/85 to-jet-950/75"></div>
       
@@ -212,6 +81,7 @@ const Hero = () => {
                 <span className="text-sm font-medium text-white">AI-Powered Platform</span>
               </motion.div>
               
+              
               <motion.h1 
                 ref={textRef}
                 initial={{ opacity: 0, y: 20 }}
@@ -232,6 +102,7 @@ const Hero = () => {
               >
                 Leverage the power of artificial intelligence to automate your workflow, generate more qualified leads, and close deals faster.
               </motion.p>
+              
               
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -389,6 +260,7 @@ const Hero = () => {
             </div>
             
             <div className="lg:w-5/12 animate-fade-in">
+              
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -397,6 +269,7 @@ const Hero = () => {
                 <Card className="premium-card overflow-hidden shadow-glow-gold">
                   <CardContent className="p-8">
                     <div className="space-y-6">
+                      
                       <motion.div 
                         animate={{ 
                           y: [0, -10, 0],
