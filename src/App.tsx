@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import Agents from "./pages/Agents";
 import AgentsDemos from "./pages/AgentsDemos";
 import AgentDeployment from "./pages/AgentDeployment";
+import MultiAgentChat from "./pages/MultiAgentChat";
 import TestAuth from "./pages/TestAuth";
 import { createAuthListener } from "./services/auth";
 import { AuthProvider, useAuth } from "./hooks/useAuth";
@@ -121,6 +122,7 @@ const AnimatedRoutes = () => {
         <Route path="/test-auth" element={<PageTransition><TestAuth /></PageTransition>} />
         <Route path="/agents-demos" element={<PageTransition><AgentsDemos /></PageTransition>} />
         <Route path="/agent-deployment" element={<PageTransition><AgentDeployment /></PageTransition>} />
+        <Route path="/multi-agent-chat" element={<PageTransition><MultiAgentChat /></PageTransition>} />
         
         {/* Protected routes - only for authenticated clients */}
         <Route 
