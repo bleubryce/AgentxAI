@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { AgentTypingIndicator } from '@/components/multiagent/AgentTypingIndicator';
+import { AvailableAgent } from '@/types/agent';
 
 export const MultiAgentChatPromo = () => {
   const navigate = useNavigate();
@@ -12,10 +13,31 @@ export const MultiAgentChatPromo = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   
-  const agents = [
-    { id: 'data-analyst', name: 'Data Analyst', emoji: '📊', color: 'text-green-400' },
-    { id: 'marketing-expert', name: 'Marketing Expert', emoji: '📈', color: 'text-blue-400' },
-    { id: 'property-advisor', name: 'Property Advisor', emoji: '🏠', color: 'text-purple-400' }
+  const agents: AvailableAgent[] = [
+    { 
+      id: 'data-analyst', 
+      name: 'Data Analyst', 
+      emoji: '📊', 
+      description: 'Analyzes real estate market data and trends',
+      capabilities: ['data-analysis', 'market-trends', 'visualization'],
+      model: 'gpt-4o'
+    },
+    { 
+      id: 'marketing-expert', 
+      name: 'Marketing Expert', 
+      emoji: '📈', 
+      description: 'Provides marketing strategies for real estate',
+      capabilities: ['content-creation', 'audience-targeting', 'campaign-optimization'],
+      model: 'gpt-4o'
+    },
+    { 
+      id: 'property-advisor', 
+      name: 'Property Advisor', 
+      emoji: '🏠', 
+      description: 'Offers insights on property selection and investment',
+      capabilities: ['property-valuation', 'investment-analysis', 'location-assessment'],
+      model: 'gpt-4o'
+    }
   ];
   
   useEffect(() => {
@@ -139,8 +161,8 @@ export const MultiAgentChatPromo = () => {
                       <span className="text-xl">{agent.emoji}</span>
                     </div>
                     <div>
-                      <h4 className={`font-medium ${agent.color}`}>{agent.name}</h4>
-                      <p className="text-sm text-gray-400">Specialized in real estate {agent.id.replace('-', ' ')} insights</p>
+                      <h4 className="font-medium text-bolt-blue">{agent.name}</h4>
+                      <p className="text-sm text-gray-400">Specialized in {agent.description.toLowerCase()}</p>
                     </div>
                   </div>
                 ))}
