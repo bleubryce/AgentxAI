@@ -78,8 +78,7 @@ const ProtectedRoute = ({ children, requiresSubscription = false, requiredFeatur
   requiredFeature?: string
 }) => {
   const { isAuthenticated, isLoading, hasActiveSubscription, hasFeatureAccess } = useAuth();
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-
+  
   // Show loading state while checking auth
   if (isLoading) {
     return (
