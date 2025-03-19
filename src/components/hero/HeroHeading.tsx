@@ -10,7 +10,7 @@ const HeroHeading = ({ textRef }: { textRef: React.RefObject<HTMLHeadingElement>
   const buttonVariants = {
     hover: { 
       scale: 1.05,
-      boxShadow: "0 0 15px rgba(147, 51, 234, 0.5)"
+      boxShadow: "0 0 15px rgba(14, 165, 233, 0.5)"
     },
     tap: { 
       scale: 0.98
@@ -23,10 +23,10 @@ const HeroHeading = ({ textRef }: { textRef: React.RefObject<HTMLHeadingElement>
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-900/40 to-blue-900/40 backdrop-blur-lg px-4 py-2 rounded-full border border-purple-500/30"
+        className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-900/40 to-teal-900/40 backdrop-blur-lg px-4 py-2 rounded-full border border-blue-500/30"
       >
-        <Sparkles className="w-4 h-4 text-purple-400" />
-        <span className="text-sm font-medium text-purple-100">Next-Gen AI Platform</span>
+        <Sparkles className="w-4 h-4 text-blue-400" />
+        <span className="text-sm font-medium text-blue-100">Next-Gen AI Platform</span>
       </motion.div>
       
       <motion.h1 
@@ -38,7 +38,7 @@ const HeroHeading = ({ textRef }: { textRef: React.RefObject<HTMLHeadingElement>
       >
         <span className="block mb-2 text-white text-shadow-lg">The Future of</span>
         <motion.span 
-          className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-blue-400 to-purple-500 font-playfair"
+          className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-teal-400 to-blue-500 font-playfair"
           animate={{ 
             backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
           }}
@@ -73,7 +73,7 @@ const HeroHeading = ({ textRef }: { textRef: React.RefObject<HTMLHeadingElement>
           whileHover="hover"
           whileTap="tap"
         >
-          <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 rounded-full px-8 hover:shadow-glow-purple">
+          <Button size="lg" className="bg-gradient-to-r from-blue-600 to-teal-600 text-white border-0 rounded-full px-8 hover:shadow-glow-blue">
             Get Started
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
@@ -87,7 +87,7 @@ const HeroHeading = ({ textRef }: { textRef: React.RefObject<HTMLHeadingElement>
           <Button 
             size="lg" 
             variant="outline" 
-            className="border border-purple-500/30 text-white rounded-full px-8 hover:bg-purple-500/10"
+            className="border border-blue-500/30 text-white rounded-full px-8 hover:bg-blue-500/10"
             onClick={() => navigate('/agents-demos')}
             aria-label="Watch demo of AI agents"
           >

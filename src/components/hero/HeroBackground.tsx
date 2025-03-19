@@ -46,9 +46,9 @@ const HeroBackground = ({ children }: HeroBackgroundProps) => {
       {/* Enhanced futuristic overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-jet-950/90 via-jet-950/80 to-jet-950/70"></div>
       
-      {/* Animated glowing orbs with neon highlights */}
+      {/* Animated glowing orbs with ocean highlights */}
       <motion.div 
-        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-purple-500/10 blur-[150px]"
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-500/10 blur-[150px]"
         animate={{ 
           opacity: [0.5, 0.8, 0.5],
           scale: [1, 1.1, 1],
@@ -61,7 +61,7 @@ const HeroBackground = ({ children }: HeroBackgroundProps) => {
       />
       
       <motion.div 
-        className="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full bg-blue-500/15 blur-[120px]"
+        className="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full bg-green-400/15 blur-[120px]"
         animate={{ 
           opacity: [0.6, 0.9, 0.6],
           scale: [1, 1.2, 1],

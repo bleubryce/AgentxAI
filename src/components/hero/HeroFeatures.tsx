@@ -7,9 +7,9 @@ const HeroFeatures = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <motion.div 
         whileHover={{ scale: 1.02 }}
-        className="flex items-start space-x-3 p-3 bg-jet-800/50 rounded-lg border border-gold-500/10"
+        className="flex items-start space-x-3 p-3 bg-jet-800/50 rounded-lg border border-blue-500/10"
       >
-        <div className="w-8 h-8 rounded-full bg-gold-500/30 flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0">
           <CheckCircle2 className="w-4 h-4 text-white" />
         </div>
         <div>
@@ -19,9 +19,9 @@ const HeroFeatures = () => {
       </motion.div>
       <motion.div 
         whileHover={{ scale: 1.02 }}
-        className="flex items-start space-x-3 p-3 bg-jet-800/50 rounded-lg border border-gold-500/10"
+        className="flex items-start space-x-3 p-3 bg-jet-800/50 rounded-lg border border-blue-500/10"
       >
-        <div className="w-8 h-8 rounded-full bg-gold-500/30 flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0">
           <CheckCircle2 className="w-4 h-4 text-white" />
         </div>
         <div>

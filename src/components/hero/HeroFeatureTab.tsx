@@ -14,22 +14,22 @@ const HeroFeatureTab = () => {
       className="pt-6"
     >
       <Tabs defaultValue="stats" className="w-full">
-        <TabsList className="bg-black/40 backdrop-blur-md border border-purple-500/20 p-1 rounded-lg">
+        <TabsList className="bg-black/40 backdrop-blur-md border border-blue-500/20 p-1 rounded-lg">
           <TabsTrigger 
             value="stats" 
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/20 data-[state=active]:to-blue-600/20 data-[state=active]:backdrop-blur-lg data-[state=active]:text-white rounded-md transition-all"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600/20 data-[state=active]:to-teal-600/20 data-[state=active]:backdrop-blur-lg data-[state=active]:text-white rounded-md transition-all"
           >
             Statistics
           </TabsTrigger>
           <TabsTrigger 
             value="clients" 
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/20 data-[state=active]:to-blue-600/20 data-[state=active]:backdrop-blur-lg data-[state=active]:text-white rounded-md transition-all"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600/20 data-[state=active]:to-teal-600/20 data-[state=active]:backdrop-blur-lg data-[state=active]:text-white rounded-md transition-all"
           >
             Our Clients
           </TabsTrigger>
           <TabsTrigger 
             value="features" 
-            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/20 data-[state=active]:to-blue-600/20 data-[state=active]:backdrop-blur-lg data-[state=active]:text-white rounded-md transition-all"
+            className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600/20 data-[state=active]:to-teal-600/20 data-[state=active]:backdrop-blur-lg data-[state=active]:text-white rounded-md transition-all"
           >
             Key Features
           </TabsTrigger>
