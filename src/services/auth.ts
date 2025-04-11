@@ -232,7 +232,7 @@ export const AuthService = {
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
       
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.agentx-ai.com/v1';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
       
       // First check if API is available
       try {
@@ -305,7 +305,7 @@ export const AuthService = {
       const left = window.screenX + (window.outerWidth - width) / 2;
       const top = window.screenY + (window.outerHeight - height) / 2;
       
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.agentx-ai.com/v1';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
       
       // First check if API is available
       try {
