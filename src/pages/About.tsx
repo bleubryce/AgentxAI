@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronRight, Users, Award, Heart, Briefcase, MessageSquare } from "lucide-react";
+import { ChevronRight, Users, Award, Briefcase, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
@@ -130,34 +130,22 @@ const AboutPage = () => {
           >
             <h2 className="text-3xl font-bold text-center mb-12 text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text font-clash">Meet Our Team</h2>
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8"
               variants={staggerChildren}
             >
               {[
                 {
-                  name: "Alex Morgan",
-                  title: "Founder & CEO",
-                  bio: "Former tech executive with 15+ years in AI and machine learning.",
+                  name: "Brandon Metoyer",
+                  title: "Co-Founder & CEO",
+                  bio: "Tech innovator with a passion for transforming real estate through AI-driven solutions.",
                   icon: <Users className="h-8 w-8" />
                 },
                 {
-                  name: "Sarah Chen",
-                  title: "Chief Technology Officer",
-                  bio: "AI researcher and architect behind our automation platform.",
+                  name: "John Jacovides",
+                  title: "Co-Founder & CTO",
+                  bio: "Experienced software architect specializing in cutting-edge AI and machine learning technologies.",
                   icon: <Award className="h-8 w-8" />
-                },
-                {
-                  name: "Marcus Williams",
-                  title: "Real Estate Advisor",
-                  bio: "20+ years as a top-producing broker and industry consultant.",
-                  icon: <Briefcase className="h-8 w-8" />
-                },
-                {
-                  name: "Jessica Rodriguez",
-                  title: "Head of Product",
-                  bio: "Expert in creating intuitive, high-impact software solutions.",
-                  icon: <MessageSquare className="h-8 w-8" />
-                },
+                }
               ].map((member, index) => (
                 <motion.div 
                   key={index} 
