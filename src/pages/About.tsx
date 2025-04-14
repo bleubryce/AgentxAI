@@ -53,6 +53,7 @@ const AboutPage = () => {
         </div>
 
         <div className="container mx-auto px-4 py-8">
+          {/* About header section */}
           <motion.div 
             className="text-center mb-16"
             initial="initial"
@@ -76,15 +77,16 @@ const AboutPage = () => {
             <motion.div className="space-y-6" variants={fadeIn}>
               <h2 className="text-3xl font-bold text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text font-clash">Our Story</h2>
               <p className="text-white/80 text-lg">
-                Founded in 2023, AgentX AI was born from a simple observation: real estate professionals were drowning in administrative tasks instead of focusing on what matters most—their clients and closing deals.
+                Founded by Brandon Metoyer in 2023, AgentX AI emerged from a keen observation: real estate professionals were overwhelmed by administrative tasks instead of focusing on what truly matters—their clients and closing deals.
               </p>
               <p className="text-white/80 text-lg">
-                Our team of AI experts and real estate veterans came together with a singular mission: to create an AI platform that would handle the repetitive work and empower agents to multiply their productivity and impact.
+                Brandon assembled a team of top-tier professionals and experienced real estate agents who shared a singular mission: to create an AI platform that would handle repetitive work and empower agents to multiply their productivity and impact.
               </p>
               <p className="text-white/80 text-lg">
                 Today, AgentX AI serves thousands of real estate professionals nationwide, helping them automate their workflows and achieve unprecedented results in their business.
               </p>
               
+              {/* Learn More button */}
               <div className="mt-8">
                 <Button 
                   className="bg-gradient-to-r from-bolt-blue to-bolt-purple hover:shadow-glow-blue transition-all duration-300"
@@ -100,6 +102,8 @@ const AboutPage = () => {
                 </Button>
               </div>
             </motion.div>
+
+            {/* Our Vision card */}
             <motion.div 
               className="rounded-2xl overflow-hidden shadow-xl border border-white/10 bg-gradient-to-br from-bolt-dark/60 to-bolt-darker/60 backdrop-blur-sm hover:shadow-glow-blue/30 transition-all duration-500"
               variants={fadeIn}
@@ -128,22 +132,28 @@ const AboutPage = () => {
             initial="initial"
             animate="animate"
           >
-            <h2 className="text-3xl font-bold text-center mb-12 text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text font-clash">Meet Our Team</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gradient bg-gradient-to-r from-bolt-blue to-bolt-purple bg-clip-text font-clash">Our Team of Professionals</h2>
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
               variants={staggerChildren}
             >
               {[
                 {
                   name: "Brandon Metoyer",
-                  title: "Co-Founder & CEO",
-                  bio: "Tech innovator with a passion for transforming real estate through AI-driven solutions.",
+                  title: "Founder & CEO",
+                  bio: "Tech innovator driving real estate transformation through AI-powered solutions.",
                   icon: <Users className="h-8 w-8" />
                 },
                 {
-                  name: "John Jacovides",
-                  title: "Co-Founder & CTO",
-                  bio: "Experienced software architect specializing in cutting-edge AI and machine learning technologies.",
+                  name: "Real Estate Experts",
+                  title: "Advisory Board",
+                  bio: "Experienced agents and brokers providing industry insights and strategic guidance.",
+                  icon: <Briefcase className="h-8 w-8" />
+                },
+                {
+                  name: "AI & Tech Professionals",
+                  title: "Innovation Team",
+                  bio: "Cutting-edge developers and data scientists creating revolutionary automation tools.",
                   icon: <Award className="h-8 w-8" />
                 }
               ].map((member, index) => (
